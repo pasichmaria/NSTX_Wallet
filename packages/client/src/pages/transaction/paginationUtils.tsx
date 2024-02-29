@@ -1,4 +1,4 @@
-import {Grid, TablePagination } from "@mui/material";
+import {Grid, TablePagination} from "@mui/material";
 
 interface TableProps {
 	page: number;
@@ -26,3 +26,4 @@ export const CustomTablePagination = ({
 		</Grid>
 	);
 };
+

@@ -1,1 +1,1 @@
-export * from './functions.tsx'
+export * from "./privateRoute.tsx";

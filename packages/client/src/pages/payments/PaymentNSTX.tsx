@@ -1,111 +1,95 @@
-import React, {useState} from "react";
-import {Box, Grid, Paper, Select, TextField, Typography} from "@mui/material";
-import {BigButton} from "../error";
+import {Box, Grid, Paper, TextField, Typography} from "@mui/material";
 import {useNavigate} from "react-router-dom";
+import {useFormik} from "formik";
 
-interface TransferFormData {
-	recipient: string;
-	amount: number;
-}
+import {BigButton} from "../../components";
 
-export const PaymentNSTX = ({ user }: any) => {
-	const [formData, setFormData] = useState<TransferFormData>({
-		recipient: "",
-		amount: 0,
-	});
+
+export const PaymentNSTX = () => {
 	const navigate = useNavigate();
 
-	const handleFormChange = (
-		e: React.ChangeEvent<HTMLInputElement | { name?: string; value: unknown }>,
-	) => {
-		const { name, value } = e.target;
-		setFormData((prevData) => ({
-			...prevData,
-			[name as string]: value,
-		}));
-	};
+	const formik = useFormik({
+		initialValues: {
+			recipient: "",
+			amount: 0,
+			description: "",
+		},
+		onSubmit: (_values) => {
+			navigate("/transaction");
+		},
+	});
 
 	return (
+		<>
+		<Typography variant="h4" align="center" gutterBottom>
+			Transfer NSTX
+		</Typography>
 		<Grid
 			component={Paper}
 			container
-			spacing={2}
-			sx={{ backgroundColor: "rgba(33,89,173,0)", boxShadow: 5, padding: 6 }}
+			justifyContent="center"
+			alignItems="center"
+			sx={{
+				boxShadow: 6,
+				transition : "0.3s",
+				padding: 6,
+			}}
 		>
-			<Box
-				display="flex"
-				flexDirection="column"
-				alignItems="stretch"
-				height="100%"
-			>
-
-				<Typography variant="h4" gutterBottom>
-					Переказ на інший рахунок
-				</Typography>
-
-				<form style={{ width: "100%" }}>
-					<TextField
-						fullWidth
-						label="Отримувач"
-						name="recipient"
-						value={formData.recipient}
-						onChange={handleFormChange}
-						margin="normal"
-						variant="outlined"
-						required
-					/>
-					<Select
-						fullWidth
-						label="Отримувач"
-						name="recipient"
-						value={formData.recipient}
-						onChange={handleFormChange}
-						margin="normal"
-						variant="outlined"
-						required
-					>
-						<option value="1">One</option>
-						<option value="2">Two</option>
-						<option value="3">Three</option>
-					</Select>
-
-					<TextField
-						fullWidth
-						label="Сума переказу"
-						name="amount"
-						type="number"
-						value={formData.amount}
-						onChange={handleFormChange}
-						margin="normal"
-						variant="outlined"
-						required
-					/>
-
-					<Grid container direction={'row'} spacing={6}>
-						<Grid item xs={6} >
-						<BigButton
-							type="submit"
+				<form onSubmit={formik.handleSubmit}>
+					<Box sx={{ marginBottom: 2 }}>
+						<TextField
 							fullWidth
-							variant="contained"
-							color="primary"
-							onClick={() => navigate("/transaction")}
-						>
-							Cancel
-						</BigButton>
-					</Grid>
-					<Grid item xs={6}  >
-						<BigButton
+							label="Recipient"
+							name="recipient"
+							value={formik.values.recipient}
+							onChange={formik.handleChange}
+						/>
+					</Box>
+					<Box sx={{ marginBottom: 4}}>
+						<TextField
 							fullWidth
-							type="submit"
-							variant="contained"
-							color="primary"
-						>
-							Transfer
-						</BigButton>
-					</Grid>
+							label="Amount"
+							name="amount"
+							value={formik.values.amount}
+							onChange={formik.handleChange}
+						/>
+						<TextField
+							fullWidth
+							label="Description"
+							name="description"
+							sx={{mt : 2
+                        }}
+							value={formik.values.description}
+							onChange={formik.handleChange}
+						/>
+
+					</Box>
+
+					<Grid container direction="row" spacing={2}>
+						<Grid item xs={6}>
+							<BigButton
+								type="button"
+								fullWidth
+								variant="contained"
+								color="primary"
+								onClick={() => navigate("/payments")}
+							>
+								Cancel
+							</BigButton>
+						</Grid>
+						<Grid item xs={6}>
+							<BigButton
+								fullWidth
+								type="submit"
+								variant="contained"
+								color="primary"
+							>
+								Transfer
+							</BigButton>
+						</Grid>
 					</Grid>
 				</form>
-			</Box>
-		</Grid>
-	);
+			</Grid>
+			</>
+	)
 };

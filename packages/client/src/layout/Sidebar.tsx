@@ -9,9 +9,10 @@ import {
 	ListItemText,
 	Typography,
 } from "@mui/material";
-import { MdOutlineRecentActors, MdSettings, MdWallet } from "react-icons/md";
+import {MdOutlineRecentActors, MdSettings, MdTrackChanges, MdWallet} from "react-icons/md";
 import { Link as RouterLink } from "react-router-dom";
-import { useBalances, useLogout } from "../hooks";
+
+import {  useLogout } from "../hooks";
 
 interface SidebarProps {
 	open: boolean;
@@ -34,7 +35,6 @@ export const Sidebar = ({
 			console.log("Logout error", error);
 		},
 	});
-	const { balances } = useBalances({ user });
 	return (
 		<Drawer
 			variant="temporary"
@@ -100,31 +100,16 @@ export const Sidebar = ({
 					mt: 2,
 				}}
 			/>
-			<Button
-				variant="contained"
-				startIcon={<MdWallet />}
-				component={RouterLink}
-				to={"/page"}
-				sx={{
-					color: "black",
-					marginRight: 2,
-				}}
-			>
-				PAGWE
-			</Button>
 
-			<CustomListItems user={user} />
+
+			<CustomListItems />
 			{isMobile && <Button onClick={handleDrawerClose}>Close</Button>}
 			{user && <Button onClick={() => logout()}>Logout</Button>}
 		</Drawer>
 	);
 };
 
-export const CustomListItems = ({
-	user,
-}: {
-	user: any;
-}) => {
+export const CustomListItems = () => {
 	return (
 		<List
 			sx={{
@@ -145,21 +130,21 @@ export const CustomListItems = ({
 				<ListItemIcon>
 					<MdWallet />
 				</ListItemIcon>
-				<ListItemText primary="Wallet" />
+				<ListItemText primary="Transactions" />
 			</ListItem>
 
-			<ListItem button component={RouterLink} to="/transactions">
+			<ListItem button component={RouterLink} to="/payments">
 				<ListItemIcon>
 					<MdOutlineRecentActors />
 				</ListItemIcon>
-				<ListItemText primary="Receipts" />
+				<ListItemText primary="Payments" />
 			</ListItem>
 			<Grid container justifyContent="center">
-				<ListItem button component={RouterLink} to="/transactions">
+				<ListItem button component={RouterLink} to="/transfer">
 					<ListItemIcon>
-						<MdOutlineRecentActors />
+						<MdTrackChanges />
 					</ListItemIcon>
-					<ListItemText primary="Receipts" />
+					<ListItemText primary="Transfer" />
 				</ListItem>
 			</Grid>
 		</List>

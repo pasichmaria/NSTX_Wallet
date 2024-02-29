@@ -1,3 +1,3 @@
-export const BinancePayment = ({ user }: any) => {
+export const PaymentBinance = () => {
     return <div>BinancePayment</div>;
 }

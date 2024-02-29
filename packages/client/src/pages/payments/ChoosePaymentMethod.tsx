@@ -1,11 +1,9 @@
-import {Box, Button, Grid, Typography} from "@mui/material";
+import {Box,Grid} from "@mui/material";
 import {useNavigate} from "react-router-dom";
-import {User} from "../../interfaces";
-import {BigButton} from "../error";
+import {BigButton} from "../../components";
 
-export const ChoosePaymentMethod = ({ user }: { user : User }) => {
+export const ChoosePaymentMethod = () => {
 	const navigate = useNavigate();
-
 	return (
 		<Grid container spacing={3}>
 			<Grid item xs={12} sm={4}>

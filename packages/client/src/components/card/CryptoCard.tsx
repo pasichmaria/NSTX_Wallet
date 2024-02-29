@@ -1,12 +1,12 @@
-import React, { ReactNode } from 'react';
-import styled from 'styled-components';
-import { Button } from '@mui/material';
-import { MdArrowRight } from 'react-icons/md';
+import { Button } from "@mui/material";
+import React, { ReactNode } from "react";
+import { MdArrowRight } from "react-icons/md";
+import styled from "styled-components";
 
 interface CurrencyCardProps {
-    icon: ReactNode;
-    label: string;
-    percentage: string;
+	icon: ReactNode;
+	label: string;
+	percentage: string;
 }
 
 const CurrencyCardContainer = styled.div`
@@ -22,7 +22,7 @@ const CardContent = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 20px;
+    padding: 0 10px;
     height: 100%;
 `;
 
@@ -59,23 +59,27 @@ const CurrencyButton = styled(Button)`
     }
 `;
 
-const CryptoCard: React.FC<CurrencyCardProps> = ({ icon, label, percentage }) => {
-    return (
-        <CurrencyCardContainer>
-            <CardContent>
-                <CurrencyInfo>
-                    <IconContainer>{icon}</IconContainer>
-                    <div>
-                        <CurrencyLabel>{label}</CurrencyLabel>
-                        <PercentageLabel>{percentage} %</PercentageLabel>
-                    </div>
-                </CurrencyInfo>
-                <CurrencyButton>
-                    <MdArrowRight />
-                </CurrencyButton>
-            </CardContent>
-        </CurrencyCardContainer>
-    );
+const CryptoCard: React.FC<CurrencyCardProps> = ({
+	icon,
+	label,
+	percentage,
+}) => {
+	return (
+		<CurrencyCardContainer>
+			<CardContent>
+				<CurrencyInfo>
+					<IconContainer>{icon}</IconContainer>
+					<div>
+						<CurrencyLabel>{label}</CurrencyLabel>
+						<PercentageLabel>{percentage} %</PercentageLabel>
+					</div>
+				</CurrencyInfo>
+				<CurrencyButton>
+					<MdArrowRight />
+				</CurrencyButton>
+			</CardContent>
+		</CurrencyCardContainer>
+	);
 };
 
 export default CryptoCard;

@@ -1,18 +1,19 @@
 import React, { useState } from "react";
-import { useTransactions } from "../hooks/useTransactions.tsx";
+import { useTransactions } from "../hooks/useTransactions";
 
 export const TransactionsPageLogic = ({ user }: any) => {
 	const { transactions } = useTransactions({ user });
 	const [filteredTransactions, setFilteredTransactions] = useState(
 		transactions
 	);
+
 	const [searchTerm, setSearchTerm] = useState("");
 	const [sortBy, setSortBy] = useState("");
 	const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
 	const [currencyFilter, setCurrencyFilter] = useState("All");
 	const [typeFilter, setTypeFilter] = useState("All");
-	const [page, setPage] = useState(0); // Current page
-	const [rowsPerPage, setRowsPerPage] = useState(10); // Number of rows per page
+	const [page, setPage] = useState(0);
+	const [rowsPerPage, setRowsPerPage] = useState(10);
 
 	const handleSearch = (term: string) => {
 		const filtered = transactions.filter((transaction: any) =>
@@ -57,7 +58,7 @@ export const TransactionsPageLogic = ({ user }: any) => {
 	};
 
 	const handlePageChange = (
-		event: React.MouseEvent<HTMLButtonElement> | null,
+		_event: React.MouseEvent<HTMLButtonElement> | null,
 		newPage: number
 	) => {
 		setPage(newPage);
@@ -81,13 +82,15 @@ export const TransactionsPageLogic = ({ user }: any) => {
 			filtered = filtered.filter((transaction) => transaction.type === type);
 		}
 		setFilteredTransactions(filtered);
-		setPage(0); // Reset to first page after filtering
+		setPage(0);
 	};
 
 	return {
+		transactions,
 		searchTerm,
 		handleSearch,
 		filteredTransactions,
+		setFilteredTransactions,
 		sortBy,
 		sortOrder,
 		handleSort,
