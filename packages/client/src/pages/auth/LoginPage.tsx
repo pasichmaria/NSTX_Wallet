@@ -1,22 +1,23 @@
-import {Avatar, Box, Button, Grid, Link, Paper, TextField, Typography,} from "@mui/material";
+import {Avatar, Box, Button, Grid,  Paper, TextField, Typography,} from "@mui/material";
 
 import {useFormik} from "formik";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, Link} from "react-router-dom";
 import {useAuth} from "../../hooks";
 
 export const LoginPage = () => {
 	const navigate = useNavigate();
 
 	const { login } = useAuth({
-		onSuccess: (_data) => {
+		onSuccess: () => {
 			navigate("/");
 		},
-		onError: (error) => {
-			console.log(error);
+		onError: () => {
+			console.log("Login error");
 		},
 	});
 
-	const formik = useFormik({
+	const formik = useFormik(
+		{
 		initialValues: {
 			email: "",
 			password: "",
@@ -93,9 +94,9 @@ export const LoginPage = () => {
 							</Button>
 							<Grid container justifyContent="flex-end">
 								<Grid item>
-									<Link href="/registration" variant="body2">
-										Don't have an account? Sign up
-									</Link>
+								<Button variant={'text'} to={'/sign-up'} component={Link}>
+									Sign up
+								</Button>
 								</Grid>
 							</Grid>
 						</Box>

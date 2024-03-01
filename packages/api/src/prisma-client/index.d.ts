@@ -196,7 +196,7 @@ export class PrismaClient<
 	 * Allows the running of a sequence of read/write operations that are guaranteed to either succeed or fail as a whole.
 	 * @example
 	 * ```
-	 * const [george, bob, alice] = await prisma.$transaction([
+	 * const [george, bob, alice] = await prisma.$transactions([
 	 *   prisma.user.create({ data: { name: 'George' } }),
 	 *   prisma.user.create({ data: { name: 'Bob' } }),
 	 *   prisma.user.create({ data: { name: 'Alice' } }),
@@ -244,11 +244,11 @@ export class PrismaClient<
 	get balance(): Prisma.BalanceDelegate<ExtArgs>;
 
 	/**
-	 * `prisma.transaction`: Exposes CRUD operations for the **Transaction** model.
+	 * `prisma.transactions`: Exposes CRUD operations for the **Transaction** model.
 	 * Example usage:
 	 * ```ts
 	 * // Fetch zero or more Transactions
-	 * const transactions = await prisma.transaction.findMany()
+	 * const transactions = await prisma.transactions.findMany()
 	 * ```
 	 */
 	get transaction(): Prisma.TransactionDelegate<ExtArgs>;
@@ -3430,7 +3430,7 @@ export namespace Prisma {
 		 * @param {TransactionFindUniqueArgs} args - Arguments to find a Transaction
 		 * @example
 		 * // Get one Transaction
-		 * const transaction = await prisma.transaction.findUnique({
+		 * const transactions = await prisma.transactions.findUnique({
 		 *   where: {
 		 *     // ... provide filter here
 		 *   }
@@ -3454,7 +3454,7 @@ export namespace Prisma {
 		 * @param {TransactionFindUniqueOrThrowArgs} args - Arguments to find a Transaction
 		 * @example
 		 * // Get one Transaction
-		 * const transaction = await prisma.transaction.findUniqueOrThrow({
+		 * const transactions = await prisma.transactions.findUniqueOrThrow({
 		 *   where: {
 		 *     // ... provide filter here
 		 *   }
@@ -3479,7 +3479,7 @@ export namespace Prisma {
 		 * @param {TransactionFindFirstArgs} args - Arguments to find a Transaction
 		 * @example
 		 * // Get one Transaction
-		 * const transaction = await prisma.transaction.findFirst({
+		 * const transactions = await prisma.transactions.findFirst({
 		 *   where: {
 		 *     // ... provide filter here
 		 *   }
@@ -3505,7 +3505,7 @@ export namespace Prisma {
 		 * @param {TransactionFindFirstOrThrowArgs} args - Arguments to find a Transaction
 		 * @example
 		 * // Get one Transaction
-		 * const transaction = await prisma.transaction.findFirstOrThrow({
+		 * const transactions = await prisma.transactions.findFirstOrThrow({
 		 *   where: {
 		 *     // ... provide filter here
 		 *   }
@@ -3530,13 +3530,13 @@ export namespace Prisma {
 		 * @param {TransactionFindManyArgs=} args - Arguments to filter and select certain fields only.
 		 * @example
 		 * // Get all Transactions
-		 * const transactions = await prisma.transaction.findMany()
+		 * const transactions = await prisma.transactions.findMany()
 		 *
 		 * // Get first 10 Transactions
-		 * const transactions = await prisma.transaction.findMany({ take: 10 })
+		 * const transactions = await prisma.transactions.findMany({ take: 10 })
 		 *
 		 * // Only select the `id`
-		 * const transactionWithIdOnly = await prisma.transaction.findMany({ select: { id: true } })
+		 * const transactionWithIdOnly = await prisma.transactions.findMany({ select: { id: true } })
 		 *
 		 **/
 		findMany<T extends TransactionFindManyArgs<ExtArgs>>(
@@ -3550,7 +3550,7 @@ export namespace Prisma {
 		 * @param {TransactionCreateArgs} args - Arguments to create a Transaction.
 		 * @example
 		 * // Create one Transaction
-		 * const Transaction = await prisma.transaction.create({
+		 * const Transaction = await prisma.transactions.create({
 		 *   data: {
 		 *     // ... data to create a Transaction
 		 *   }
@@ -3570,7 +3570,7 @@ export namespace Prisma {
 		 *     @param {TransactionCreateManyArgs} args - Arguments to create many Transactions.
 		 *     @example
 		 *     // Create many Transactions
-		 *     const transaction = await prisma.transaction.createMany({
+		 *     const transactions = await prisma.transactions.createMany({
 		 *       data: {
 		 *         // ... provide data here
 		 *       }
@@ -3586,7 +3586,7 @@ export namespace Prisma {
 		 * @param {TransactionDeleteArgs} args - Arguments to delete one Transaction.
 		 * @example
 		 * // Delete one Transaction
-		 * const Transaction = await prisma.transaction.delete({
+		 * const Transaction = await prisma.transactions.delete({
 		 *   where: {
 		 *     // ... filter to delete one Transaction
 		 *   }
@@ -3606,7 +3606,7 @@ export namespace Prisma {
 		 * @param {TransactionUpdateArgs} args - Arguments to update one Transaction.
 		 * @example
 		 * // Update one Transaction
-		 * const transaction = await prisma.transaction.update({
+		 * const transactions = await prisma.transactions.update({
 		 *   where: {
 		 *     // ... provide filter here
 		 *   },
@@ -3629,7 +3629,7 @@ export namespace Prisma {
 		 * @param {TransactionDeleteManyArgs} args - Arguments to filter Transactions to delete.
 		 * @example
 		 * // Delete a few Transactions
-		 * const { count } = await prisma.transaction.deleteMany({
+		 * const { count } = await prisma.transactions.deleteMany({
 		 *   where: {
 		 *     // ... provide filter here
 		 *   }
@@ -3647,7 +3647,7 @@ export namespace Prisma {
 		 * @param {TransactionUpdateManyArgs} args - Arguments to update one or more rows.
 		 * @example
 		 * // Update many Transactions
-		 * const transaction = await prisma.transaction.updateMany({
+		 * const transactions = await prisma.transactions.updateMany({
 		 *   where: {
 		 *     // ... provide filter here
 		 *   },
@@ -3666,7 +3666,7 @@ export namespace Prisma {
 		 * @param {TransactionUpsertArgs} args - Arguments to update or create a Transaction.
 		 * @example
 		 * // Update or create a Transaction
-		 * const transaction = await prisma.transaction.upsert({
+		 * const transactions = await prisma.transactions.upsert({
 		 *   create: {
 		 *     // ... data to create a Transaction
 		 *   },
@@ -3693,7 +3693,7 @@ export namespace Prisma {
 		 * @param {TransactionCountArgs} args - Arguments to filter Transactions to count.
 		 * @example
 		 * // Count the number of Transactions
-		 * const count = await prisma.transaction.count({
+		 * const count = await prisma.transactions.count({
 		 *   where: {
 		 *     // ... the filter for the Transactions we want to count
 		 *   }

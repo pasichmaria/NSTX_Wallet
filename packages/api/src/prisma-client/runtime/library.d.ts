@@ -1913,7 +1913,7 @@ export declare function getPrismaClient(config: GetPrismaClientConfig): {
 			...values: RawValue[]
 		): PrismaPromise_2<unknown>;
 		/**
-		 * Execute a batch of requests in a transaction
+		 * Execute a batch of requests in a transactions
 		 * @param requests
 		 * @param options
 		 */
@@ -1925,7 +1925,7 @@ export declare function getPrismaClient(config: GetPrismaClientConfig): {
 			options?: BatchTransactionOptions | undefined;
 		}): Promise<any>;
 		/**
-		 * Perform a long-running transaction
+		 * Perform a long-running transactions
 		 * @param callback
 		 * @param options
 		 * @returns
@@ -1939,7 +1939,7 @@ export declare function getPrismaClient(config: GetPrismaClientConfig): {
 		}): Promise<unknown>;
 		_createItxClient(transaction: PrismaPromiseInteractiveTransaction): Client;
 		/**
-		 * Execute queries within a transaction
+		 * Execute queries within a transactions
 		 * @param input a callback or a query list
 		 * @param options to set timeouts (callback)
 		 * @returns
@@ -2878,7 +2878,7 @@ declare interface PrismaPromise_2<A> extends Promise<A> {
 	 * Extension of the original `.then` function
 	 * @param onfulfilled same as regular promises
 	 * @param onrejected same as regular promises
-	 * @param transaction transaction options
+	 * @param transaction transactions options
 	 */
 	then<R1 = A, R2 = never>(
 		onfulfilled?: (value: A) => R1 | PromiseLike<R1>,
@@ -2888,7 +2888,7 @@ declare interface PrismaPromise_2<A> extends Promise<A> {
 	/**
 	 * Extension of the original `.catch` function
 	 * @param onrejected same as regular promises
-	 * @param transaction transaction options
+	 * @param transaction transactions options
 	 */
 	catch<R = never>(
 		onrejected?: ((reason: any) => R | PromiseLike<R>) | undefined | null,
@@ -2897,7 +2897,7 @@ declare interface PrismaPromise_2<A> extends Promise<A> {
 	/**
 	 * Extension of the original `.finally` function
 	 * @param onfinally same as regular promises
-	 * @param transaction transaction options
+	 * @param transaction transactions options
 	 */
 	finally(
 		onfinally?: (() => void) | undefined | null,
@@ -2905,7 +2905,7 @@ declare interface PrismaPromise_2<A> extends Promise<A> {
 	): Promise<A>;
 	/**
 	 * Called when executing a batch of regular tx
-	 * @param transaction transaction options for batch tx
+	 * @param transaction transactions options for batch tx
 	 */
 	requestTransaction?(
 		transaction: PrismaPromiseBatchTransaction,
@@ -2926,7 +2926,7 @@ declare type PrismaPromiseCallback = (
 
 /**
  * Creates a [[PrismaPromise]]. It is Prisma's implementation of `Promise` which
- * is essentially a proxy for `Promise`. All the transaction-compatible client
+ * is essentially a proxy for `Promise`. All the transactions-compatible client
  * methods return one, this allows for pre-preparing queries without executing
  * them until `.then` is called. It's the foundation of Prisma's query batching.
  * @param callback that will be wrapped within our promise implementation
@@ -3636,11 +3636,11 @@ declare interface Transaction extends Queryable {
 	 */
 	readonly options: TransactionOptions;
 	/**
-	 * Commit the transaction.
+	 * Commit the transactions.
 	 */
 	commit(): Promise<Result_4<void>>;
 	/**
-	 * Rolls back the transaction.
+	 * Rolls back the transactions.
 	 */
 	rollback(): Promise<Result_4<void>>;
 }

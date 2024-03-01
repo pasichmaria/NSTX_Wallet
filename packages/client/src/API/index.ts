@@ -1,3 +1,3 @@
-export * from "./userApi";
-export * from "./balanceAPI";
-export * from "./transactions";
+export * from "./usersAPI";
+export * from "./balancesAPI";
+export * from "./transactionsAPI";

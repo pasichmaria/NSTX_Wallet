@@ -1,23 +1,20 @@
-import { Suspense } from "react";
-import { Route, Routes } from "react-router-dom";
-
-import { CircularProgress, CssBaseline } from "@mui/material";
-
+import {Suspense} from "react";
+import {Route, Routes} from "react-router-dom";
 import "./App.css";
-import { useUser } from "./hooks";
-import { Layout } from "./layout";
+import {CircularProgress, CssBaseline} from "@mui/material";
+
+import {useUser} from "./hooks";
+import {Layout} from "./layout";
+import {LoginPage, NotFoundPage, NSTXPaymentPage, PaymentsPage, SignUpPage} from "./pages";
 import {
-	HomePage,
-	LoginPage,
-	NotFoundPage,
-	SignUpPage,
-	TransactionsTable,
-} from "./pages";
-import { BalancePage } from "./pages/BalancePage.tsx";
-import { SettingsPage } from "./pages/settings";
-import { PrivateRoute } from "./route";
-import {PaymentBinance, PaymentNSTX, PaymentPaypal} from "./pages/payments";
-import {ChoosePaymentMethod} from "./pages/payments/ChoosePaymentMethod.tsx";
+	BalancePageRoute,
+	BinancePaymentRoute,
+	HomePageRoute,
+	PaypalPaymentRoute,
+	PrivateRoute,
+	SettingsPageRoute,
+	TransactionPageRoute
+} from "./routes";
 
 function App() {
 	const { user } = useUser();
@@ -33,16 +30,14 @@ function App() {
 					<Route
 						path="/"
 						element={
-							<PrivateRoute user={user}>
-								<HomePage user={user} />
-							</PrivateRoute>
+							<HomePageRoute user={user}/>
 						}
 					/>
 					<Route
 						path="/payments"
 						element={
 							<PrivateRoute user={user}>
-								<ChoosePaymentMethod />
+								<PaymentsPage/>
 							</PrivateRoute>
 						}
 					/>
@@ -50,48 +45,40 @@ function App() {
 						path="/payments/NSTX"
 						element={
 							<PrivateRoute user={user}>
-								<PaymentNSTX />
+								<NSTXPaymentPage/>
 							</PrivateRoute>
 						}
 					/>
 					<Route
 						path="/payments/binance"
 						element={
-							<PrivateRoute user={user}>
-								<PaymentBinance />
-							</PrivateRoute>
+							<BinancePaymentRoute user={user}/>
 						}
 					/>
 					<Route
 						path="/payments/paypal"
 						element={
-							<PrivateRoute user={user}>
-								<PaymentPaypal />
-							</PrivateRoute>
-						}
-					/>
-					<Route
-						path="/transactions"
-						element={
-							<PrivateRoute user={user}>
-								<TransactionsTable user={user} />
-							</PrivateRoute>
+							<PaypalPaymentRoute user={user}/>
 						}
 					/>
 					<Route
 						path="/balance/:id"
 						element={
-							<PrivateRoute user={user}>
-								<BalancePage user={user} />
-							</PrivateRoute>
+							<BalancePageRoute user={user}/>
 						}
 					/>
 					<Route
+						path="/transactions"
+						element={
+							<TransactionPageRoute user={user}/>
+						}
+					/>
+
+
+					<Route
 						path="/settings"
 						element={
-							<PrivateRoute user={user}>
-								<SettingsPage user={user} />
-							</PrivateRoute>
+							<SettingsPageRoute user={user}/>
 						}
 					/>
 					<Route path="*" element={<NotFoundPage />} />

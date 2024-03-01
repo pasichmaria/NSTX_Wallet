@@ -1,1 +1,1 @@
-export * from "./inrterfaces";
+export * from "./interfaces.tsx";

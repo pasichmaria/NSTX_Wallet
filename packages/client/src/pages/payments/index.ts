@@ -1,3 +1,4 @@
-export * from './PaymentBinance'
-export  * from './PaymentPaypal'
-export  * from './PaymentNSTX'
+export * from './BinancePaymentPage.tsx'
+export  * from './PaypalPaymentPage.tsx'
+export  * from './NSTXPaymentPage.tsx'
+export * from './PaymentsPage.tsx'

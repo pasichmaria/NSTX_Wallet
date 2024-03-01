@@ -9948,7 +9948,7 @@ c();
 f();
 d();
 m();
-var Qf = "Interactive transaction error",
+var Qf = "Interactive transactions error",
 	kr = class extends Z {
 		constructor(r, n = Qf) {
 			super(n, Q(r, !1));
@@ -10096,10 +10096,10 @@ async function Lr(e, t) {
 		}
 		if ("InteractiveTransactionMisrouted" in n.body) {
 			let o = {
-				IDParseError: "Could not parse interactive transaction ID",
+				IDParseError: "Could not parse interactive transactions ID",
 				NoQueryEngineFoundError:
-					"Could not find Query Engine for the specified host and transaction ID",
-				TransactionStartError: "Could not start interactive transaction",
+					"Could not find Query Engine for the specified host and transactions ID",
+				TransactionStartError: "Could not start interactive transactions",
 			};
 			throw new kr(r, o[n.body.InteractiveTransactionMisrouted.reason]);
 		}
@@ -10547,7 +10547,7 @@ var pu = 3,
 								timeout: (a = n == null ? void 0 : n.timeout) != null ? a : 5e3,
 								isolation_level: n == null ? void 0 : n.isolationLevel,
 							}),
-							l = await this.url("transaction/start");
+							l = await this.url("transactions/start");
 						i(l);
 						let p = await St(l, {
 							method: "POST",
@@ -12076,7 +12076,7 @@ function Bd(e) {
 		if (e.kind === "batch")
 			return { kind: "batch", options: { isolationLevel: e.isolationLevel } };
 		if (e.kind === "itx") return { kind: "itx", options: Uu(e) };
-		Pt(e, "Unknown transaction kind");
+		Pt(e, "Unknown transactions kind");
 	}
 }
 function Uu(e) {
@@ -12372,7 +12372,7 @@ var Kd = {
 		requestArgsToMiddlewareArgs: (e) => e,
 		middlewareArgsToRequestArgs: (e) => e,
 	},
-	Gd = Symbol.for("prisma.client.transaction.id"),
+	Gd = Symbol.for("prisma.client.transactions.id"),
 	Jd = {
 		id: 0,
 		nextId() {
@@ -12618,7 +12618,7 @@ function Qd(e) {
 					var h, T;
 					if ((u == null ? void 0 : u[Symbol.toStringTag]) !== "PrismaPromise")
 						throw new Error(
-							"All elements of the array need to be Prisma Client promises. Hint: Please make sure you are not awaiting the Prisma client calls you intended to pass in the $transaction function.",
+							"All elements of the array need to be Prisma Client promises. Hint: Please make sure you are not awaiting the Prisma client calls you intended to pass in the $transactions function.",
 						);
 					let p = o == null ? void 0 : o.isolationLevel,
 						y = { kind: "batch", id: i, index: l, isolationLevel: p, lock: s };

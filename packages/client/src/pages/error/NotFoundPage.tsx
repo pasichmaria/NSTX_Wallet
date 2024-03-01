@@ -52,7 +52,7 @@ export const NotFoundPage = () => {
 						width: "100%",
 						marginTop: "2rem",
 					}}
-					>Contact Us
+				>Contact Us
 				</Button>
 
 
