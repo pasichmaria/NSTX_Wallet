@@ -43,6 +43,7 @@ export class TransactionController {
 						.send({ success: false, message: "Transaction not found" });
 				}
 				return reply.send(transaction);
+
 			},
 		);
 	}

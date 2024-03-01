@@ -1,22 +1,13 @@
-import {
-	Avatar,
-	Button,
-	Drawer,
-	Grid,
-	List,
-	ListItem,
-	ListItemIcon,
-	ListItemText,
-	Typography,
-} from "@mui/material";
+import {Avatar, Button, Drawer, Grid, List, ListItem, ListItemIcon, ListItemText, Typography,} from "@mui/material";
 import {MdOutlineRecentActors, MdSettings, MdTrackChanges, MdWallet} from "react-icons/md";
-import { Link as RouterLink } from "react-router-dom";
+import {Link as RouterLink} from "react-router-dom";
 
-import {  useLogout } from "../hooks";
+import {useLogout} from "../hooks";
+import {User} from "../interfaces";
 
 interface SidebarProps {
 	open: boolean;
-	user: any;
+	user?: User;
 	handleDrawerClose: () => void;
 	isMobile: boolean;
 }
@@ -31,8 +22,8 @@ export const Sidebar = ({
 		onSuccess: () => {
 			console.log("Logout success");
 		},
-		onError: (error) => {
-			console.log("Logout error", error);
+		onError: () => {
+			console.log("Logout error");
 		},
 	});
 	return (

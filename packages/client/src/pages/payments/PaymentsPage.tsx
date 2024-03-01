@@ -2,7 +2,7 @@ import {Box,Grid} from "@mui/material";
 import {useNavigate} from "react-router-dom";
 import {BigButton} from "../../components";
 
-export const ChoosePaymentMethod = () => {
+export const PaymentsPage = () => {
 	const navigate = useNavigate();
 	return (
 		<Grid container spacing={3}>

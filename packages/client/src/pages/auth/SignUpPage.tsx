@@ -1,18 +1,9 @@
-import {
-	Avatar,
-	Box,
-	Button,
-	Grid,
-	Link,
-	Paper,
-	TextField,
-	Typography,
-} from "@mui/material";
+import {Avatar, Box, Button, Grid, Paper, TextField, Typography,} from "@mui/material";
 
-import { useFormik } from "formik";
-import { useNavigate } from "react-router-dom";
+import {useFormik} from "formik";
+import {Link, useNavigate} from "react-router-dom";
 import * as Yup from "yup";
-import { register } from "../../API";
+import {register} from "../../API";
 
 export const SignUpPage = () => {
 	const navigate = useNavigate();
@@ -138,9 +129,9 @@ export const SignUpPage = () => {
 								Register
 							</Button>
 							<Box mt={2} textAlign="right">
-								<Link href="/login" variant="body2">
-									Already have an account? Sign in
-								</Link>
+								<Button component={Link} variant={'text'} to={'/login'}>
+									Sign in
+								</Button>
 							</Box>
 						</form>
 					</Paper>

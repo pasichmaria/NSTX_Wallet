@@ -1,6 +1,5 @@
-
-import { Link as RouterLink } from "react-router-dom";
-import { useContext, useMemo, useState } from "react";
+import {Link as RouterLink} from "react-router-dom";
+import {useContext, useMemo, useState} from "react";
 import {
 	BottomNavigation,
 	BottomNavigationAction,
@@ -13,21 +12,16 @@ import {
 	useMediaQuery,
 	useTheme,
 } from "@mui/material";
-import {
-	MdDarkMode,
-	MdLogin,
-	MdLogout,
-	MdMenu,
-	MdReceipt,
-	MdSunny,
-	MdWallet,
-} from "react-icons/md";
+import {MdDarkMode, MdLogin, MdLogout, MdMenu, MdReceipt, MdSunny, MdWallet,} from "react-icons/md";
 
-import { useLogout } from "../hooks";
-import { ThemeContext } from "../theme.tsx";
-import {HeaderProps} from "../interfaces";
+import {useLogout} from "../hooks";
+import {ThemeContext} from "../theme.tsx";
 import {Sidebar} from "./Sidebar.tsx";
+import {User} from "../interfaces";
 
+interface HeaderProps {
+	user?: User;
+}
 export const Header = ({ user }: HeaderProps) => {
 	const theme = useTheme();
 	const { switchColorMode } = useContext(ThemeContext);

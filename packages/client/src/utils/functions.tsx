@@ -1,11 +1,34 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useTransactions } from "../hooks/useTransactions";
+import { SelectChangeEvent } from "@mui/material";
+import { User, Transaction } from "../interfaces";
 
-export const TransactionsPageLogic = ({ user }: any) => {
+interface TransactionsPageLogicProps {
+	user: User;
+}
+
+interface TransactionsPageLogicReturn {
+	transactions: Transaction[] | undefined;
+	searchTerm: string;
+	handleSearch: (term: string) => void;
+	filteredTransactions: Transaction[] | undefined;
+	setFilteredTransactions: React.Dispatch<React.SetStateAction<Transaction[] | undefined>>;
+	sortBy: string;
+	sortOrder: "asc" | "desc";
+	handleSort: (column: string) => void;
+	currencyFilter: string;
+	handleCurrencyFilterChange: (event: SelectChangeEvent<string>) => void;
+	typeFilter: string;
+	handleTypeFilterChange: (event: SelectChangeEvent<string>) => void;
+	page: number;
+	rowsPerPage: number;
+	handleChangePage: (event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => void;
+	handleChangeRowsPerPage: (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+}
+
+export const TransactionsPageLogic = ({ user }: TransactionsPageLogicProps): TransactionsPageLogicReturn => {
 	const { transactions } = useTransactions({ user });
-	const [filteredTransactions, setFilteredTransactions] = useState(
-		transactions
-	);
+	const [filteredTransactions, setFilteredTransactions] = useState<Transaction[] | undefined>(transactions);
 
 	const [searchTerm, setSearchTerm] = useState("");
 	const [sortBy, setSortBy] = useState("");
@@ -15,8 +38,12 @@ export const TransactionsPageLogic = ({ user }: any) => {
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(10);
 
+	useEffect(() => {
+		setFilteredTransactions(transactions);
+	}, [transactions, setFilteredTransactions]);
+
 	const handleSearch = (term: string) => {
-		const filtered = transactions.filter((transaction: any) =>
+		const filtered = transactions?.filter((transaction: Transaction) =>
 			transaction.type.toLowerCase().includes(term.toLowerCase())
 		);
 		setSearchTerm(term);
@@ -25,6 +52,7 @@ export const TransactionsPageLogic = ({ user }: any) => {
 
 	const handleSort = (column: string) => {
 		const order = column === sortBy && sortOrder === "asc" ? "desc" : "asc";
+		if (!filteredTransactions) return;
 		const sorted = [...filteredTransactions].sort((a, b) => {
 			if (column === "type") {
 				return sortOrder === "asc"
@@ -41,23 +69,19 @@ export const TransactionsPageLogic = ({ user }: any) => {
 		setFilteredTransactions(sorted);
 	};
 
-	const handleCurrencyFilterChange = (
-		event: React.ChangeEvent<{ value: unknown }>
-	) => {
+	const handleCurrencyFilterChange = (event: SelectChangeEvent<string>) => {
 		const value = event.target.value as string;
 		setCurrencyFilter(value);
 		filterTransactions(value, typeFilter);
 	};
 
-	const handleTypeFilterChange = (
-		event: React.ChangeEvent<{ value: unknown }>
-	) => {
+	const handleTypeFilterChange = (event: SelectChangeEvent<string>) => {
 		const value = event.target.value as string;
 		setTypeFilter(value);
 		filterTransactions(currencyFilter, value);
 	};
 
-	const handlePageChange = (
+	const handleChangePage = (
 		_event: React.MouseEvent<HTMLButtonElement> | null,
 		newPage: number
 	) => {
@@ -74,12 +98,12 @@ export const TransactionsPageLogic = ({ user }: any) => {
 	const filterTransactions = (currency: string, type: string) => {
 		let filtered = transactions;
 		if (currency !== "All") {
-			filtered = filtered.filter(
+			filtered = filtered?.filter(
 				(transaction) => transaction.currency === currency
 			);
 		}
 		if (type !== "All") {
-			filtered = filtered.filter((transaction) => transaction.type === type);
+			filtered = filtered?.filter((transaction) => transaction.type === type);
 		}
 		setFilteredTransactions(filtered);
 		setPage(0);
@@ -100,7 +124,7 @@ export const TransactionsPageLogic = ({ user }: any) => {
 		handleTypeFilterChange,
 		page,
 		rowsPerPage,
-		handlePageChange,
+		handleChangePage,
 		handleChangeRowsPerPage,
 	};
 };

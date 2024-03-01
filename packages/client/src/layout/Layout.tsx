@@ -1,8 +1,14 @@
-import { Box } from "@mui/material";
+import {Box} from "@mui/material";
 
-import { LayoutProps } from "../interfaces";
-import { Footer } from "./Footer";
-import { Header } from "./Header";
+import {Footer} from "./Footer";
+import {Header} from "./Header";
+import {User} from "../interfaces";
+import React from "react";
+
+interface LayoutProps {
+	children: React.ReactNode;
+	user?: User;
+}
 export const Layout = ({ children, user }: LayoutProps) => {
 	return (
 		<>

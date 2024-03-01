@@ -1,12 +1,12 @@
+import { useEffect } from "react";
 import {
 	Container,
-	FormControl,
 	Grid,
-	IconButton,
-	InputAdornment,
-	MenuItem,
 	Paper,
+	TextField,
 	Select,
+	MenuItem,
+	FormControl,
 	Table,
 	TableBody,
 	TableCell,
@@ -14,24 +14,22 @@ import {
 	TableHead,
 	TableRow,
 	TableSortLabel,
-	TextField,
+	IconButton,
+	TablePagination,
 } from "@mui/material";
-
-import { useEffect } from "react";
 import { AiOutlineFieldTime } from "react-icons/ai";
 import { BiSearch } from "react-icons/bi";
 import { ImCancelCircle } from "react-icons/im";
 import { IoCheckmarkDoneOutline } from "react-icons/io5";
-import { CustomTablePagination } from "./paginationUtils.tsx";
 import { TransactionsPageLogic } from "../../utils";
+import { User } from "../../interfaces";
 
-export const TransactionsTable = ({ user }: any) => {
+export const TransactionsPage = ({ user }: { user: User }) => {
 	const {
 		transactions,
 		searchTerm,
 		handleSearch,
 		filteredTransactions,
-
 		sortBy,
 		sortOrder,
 		handleSort,
@@ -41,43 +39,34 @@ export const TransactionsTable = ({ user }: any) => {
 		handleTypeFilterChange,
 		page,
 		rowsPerPage,
-		handlePageChange,
+		handleChangePage,
 		handleChangeRowsPerPage,
 		setFilteredTransactions,
 	} = TransactionsPageLogic({ user });
 
 	useEffect(() => {
-		setFilteredTransactions(transactions);
+		setFilteredTransactions(transactions)
 	}, [transactions]);
 
 	return (
 		<Container sx={{ mt: 2 }}>
-			<Grid container spacing={2} direction={"row"}>
+			<Grid container spacing={2} direction="row">
 				<Grid item xs={12}>
-					<TableContainer
-						component={Paper}
-						sx={{
-							backgroundColor: "rgba(22,96,88,0)",
-							padding: 6,
-						}}
-					>
+					<TableContainer component={Paper} sx={{ padding: 2 }}>
 						<TextField
 							label="Search"
 							value={searchTerm}
 							onChange={(e) => handleSearch(e.target.value)}
 							InputProps={{
 								startAdornment: (
-									<InputAdornment position="start">
+									<IconButton disabled>
 										<BiSearch />
-									</InputAdornment>
+									</IconButton>
 								),
 							}}
 						/>
 						<FormControl>
 							<Select
-								sx={{
-									ml: 6,
-								}}
 								value={currencyFilter}
 								onChange={handleCurrencyFilterChange}
 								displayEmpty
@@ -91,9 +80,6 @@ export const TransactionsTable = ({ user }: any) => {
 						</FormControl>
 						<FormControl>
 							<Select
-								sx={{
-									ml: 6,
-								}}
 								value={typeFilter}
 								onChange={handleTypeFilterChange}
 								displayEmpty
@@ -140,22 +126,18 @@ export const TransactionsTable = ({ user }: any) => {
 							<TableBody>
 								{filteredTransactions
 									?.slice(page * rowsPerPage, (page + 1) * rowsPerPage)
-									.map((transaction: any, index: number) => (
-										<TableRow key={index}>
+									.map((transaction) => (
+										<TableRow key={transaction.id}>
 											<TableCell>
-												{transaction.status === "completed" ? (
-													<IconButton>
+												<IconButton disabled>
+													{transaction.status === "completed" ? (
 														<IoCheckmarkDoneOutline />
-													</IconButton>
-												) : transaction.status === "pending" ? (
-													<IconButton>
+													) : transaction.status === "pending" ? (
 														<AiOutlineFieldTime />
-													</IconButton>
-												) : (
-													<IconButton>
+													) : (
 														<ImCancelCircle />
-													</IconButton>
-												)}
+													)}
+												</IconButton>
 											</TableCell>
 											<TableCell>{transaction.type}</TableCell>
 											<TableCell
@@ -174,12 +156,14 @@ export const TransactionsTable = ({ user }: any) => {
 									))}
 							</TableBody>
 						</Table>
-						<CustomTablePagination
-							page={page}
+						<TablePagination
+							rowsPerPageOptions={[5, 10, 25]}
+							component="div"
+							count={filteredTransactions?.length || 0}
 							rowsPerPage={rowsPerPage}
-							onPageChange={handlePageChange}
+							page={page}
+							onPageChange={handleChangePage}
 							onRowsPerPageChange={handleChangeRowsPerPage}
-							totalCount={filteredTransactions?.length}
 						/>
 					</TableContainer>
 				</Grid>

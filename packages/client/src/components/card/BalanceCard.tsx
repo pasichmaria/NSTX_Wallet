@@ -1,14 +1,9 @@
 import styled from "styled-components";
-
-interface Balance {
-	id: string;
-	userId: { firstName: string; lastName: string };
-	value: number;
-	currency: string;
-}
+import {Balance, User} from "../../interfaces";
 
 interface BankCardProps {
 	balance: Balance;
+	user: User;
 }
 
 const BankCardContainer = styled.div`
@@ -145,14 +140,12 @@ const ExpirationText = styled.div`
     }
 `;
 
-export const BalanceCard = ({ balance }: BankCardProps) => {
-	const { userId, value, currency } = balance;
-
+export const BalanceCard = ({ balance, user }: BankCardProps) => {
 	return (
 		<BankCardContainer>
 			<BankNameAndLogo>
 				<BankName>Wallet</BankName>
-				<BankLogo>NSTX </BankLogo>
+				<BankLogo>NSTX</BankLogo>
 			</BankNameAndLogo>
 			<CardNumberContainer>
 				<CardNumber>
@@ -163,7 +156,7 @@ export const BalanceCard = ({ balance }: BankCardProps) => {
 			<CardHolderAndExpiration>
 				<CardHolderName>
 					<CardHolderText>
-						{userId.firstName} {userId.lastName}
+						{user.firstName} {user.lastName}
 					</CardHolderText>
 				</CardHolderName>
 				<ExpirationDate>
@@ -172,7 +165,7 @@ export const BalanceCard = ({ balance }: BankCardProps) => {
 			</CardHolderAndExpiration>
 			<div>
 				<span>
-					Balance: {value} {currency}
+					Balance: {balance.value} {balance.currency}
 				</span>
 			</div>
 		</BankCardContainer>

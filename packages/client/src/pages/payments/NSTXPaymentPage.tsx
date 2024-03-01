@@ -5,7 +5,7 @@ import {useFormik} from "formik";
 import {BigButton} from "../../components";
 
 
-export const PaymentNSTX = () => {
+export const NSTXPaymentPage = () => {
 	const navigate = useNavigate();
 
 	const formik = useFormik({

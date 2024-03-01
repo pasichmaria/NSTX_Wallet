@@ -1,16 +1,20 @@
-import { useMutation } from "react-query";
-import { useNavigate } from "react-router-dom";
+import {useMutation} from "react-query";
+import {useNavigate} from "react-router-dom";
+import {login, logout} from "../API";
 
-import { login, logout } from "../API";
-import {AuthProps} from "../interfaces";
-
-
+interface AuthProps {
+	onSuccess?: (data: string) => void;
+	onError?: (error: unknown) => void;
+}
 export const useAuth = ({ onSuccess, onError }: AuthProps) => {
 	const navigate = useNavigate();
-	const loginQuery = useMutation("user", async (data) => login(data), {
+	const loginQuery = useMutation<string, unknown, {
+		email: string, password: string
+	}>("user", async (data) => login(data), {
 		onSuccess: async (data) => {
 			if (onSuccess) {
 				onSuccess(data);
+
 			}
 			sessionStorage.setItem("token", data);
 			navigate("/");

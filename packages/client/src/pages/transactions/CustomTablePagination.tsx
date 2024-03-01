@@ -1,23 +1,24 @@
 import {Grid, TablePagination} from "@mui/material";
+import React from "react";
 
 interface TableProps {
 	page: number;
 	rowsPerPage: number;
-	onPageChange: (event: any, newPage: number) => void;
-	onRowsPerPageChange: (event: any) => void;
-	totalCount: number;
+	onPageChange: (event: unknown, newPage: number) => void;
+	onRowsPerPageChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+	count: number;
 }
 export const CustomTablePagination = ({
 	page,
 	rowsPerPage,
 	onPageChange,
-	onRowsPerPageChange,
-	totalCount } : TableProps ) => {
+	onRowsPerPageChange, count
+									  }: TableProps) => {
 	return (
 		<Grid container justifyContent="center" sx={{ mt: 4 }}>
 			<TablePagination
 				component="div"
-				count={totalCount}
+				count={count || 0}
 				page={page}
 				onPageChange={onPageChange}
 				rowsPerPage={rowsPerPage}
@@ -26,4 +27,6 @@ export const CustomTablePagination = ({
 		</Grid>
 	);
 };
+
+
 

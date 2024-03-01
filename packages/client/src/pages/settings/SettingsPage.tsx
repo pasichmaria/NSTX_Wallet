@@ -1,8 +1,9 @@
-import { Box, Grid, Typography } from "@mui/material";
-import { BigButton } from "../../components";
+import {Box, Grid, Typography} from "@mui/material";
+import {BigButton} from "../../components";
 import {useNavigate} from "react-router-dom";
+import {User} from "../../interfaces";
 
-export const SettingsPage = ({ user }: any) => {
+export const SettingsPage = ({user}: { user: User }) => {
 	const navigate = useNavigate();
 
 	return (
