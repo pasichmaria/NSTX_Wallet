@@ -1,10 +1,10 @@
-import { User } from "../interfaces";
 import { Navigate } from "react-router-dom";
-import { PaypalPaymentPage} from "../pages";
+import { User } from "../interfaces";
+import { PaypalPaymentPage } from "../pages";
 
 export const PaypalPaymentRoute = ({ user }: { user?: User }) => {
 	if (!user) {
-		return <Navigate to="/login" />;
+		return <Navigate to="/" />;
 	}
 	return <PaypalPaymentPage user={user} />;
 };

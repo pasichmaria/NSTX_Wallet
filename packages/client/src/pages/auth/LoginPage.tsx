@@ -1,108 +1,170 @@
-import {Avatar, Box, Button, Grid,  Paper, TextField, Typography,} from "@mui/material";
+import { useState } from "react";
+import { toast } from "react-toastify";
+import { Box, Button, Grid, Typography } from "@mui/material";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 
-import {useFormik} from "formik";
-import {useNavigate, Link} from "react-router-dom";
-import {useAuth} from "../../hooks";
+import coins from "../../assets/coins.svg";
+import { CoinMarketCapTable } from "../../components/CoinMarketCapTable";
+import { LoginDialog } from "../../components/LoginDialog";
+import { useAuth } from "../../hooks";
+import { User } from "../../interfaces";
 
-export const LoginPage = () => {
-	const navigate = useNavigate();
-
+export const LoginPage = ({
+	user,
+	getUser,
+}: {
+	user?: User | null;
+	getUser: () => void;
+}) => {
+	const [open, setOpen] = useState(false);
+	const handleOpenForm = () => {
+		getUser();
+		setOpen(true);
+	};
 	const { login } = useAuth({
 		onSuccess: () => {
-			navigate("/");
+			toast.success("Login successful");
+			getUser();
+			setOpen(false);
 		},
+
 		onError: () => {
-			console.log("Login error");
+			toast.error("Login failed");
 		},
 	});
 
-	const formik = useFormik(
-		{
+	const validationSchema = Yup.object({
+		email: Yup.string()
+			.email("Invalid email address")
+			.required("Required")
+			.min(3)
+			.max(320),
+		password: Yup.string().required("Required"),
+	});
+
+	const formik = useFormik({
 		initialValues: {
 			email: "",
 			password: "",
 		},
+		validationSchema: validationSchema,
 		onSubmit: (values) => {
 			login(values);
 		},
 	});
 
 	return (
-		<Grid container>
-			<Box
+		<Grid
+			container
+			flexDirection={"row"}
+			sx={{
+				backgroundImage: user ? "none" : `url(${coins})`,
+				backgroundSize: "contain",
+				width: "100%",
+				height: "100vh",
+			}}
+		>
+			<Grid
+				container
+				item
+				xs={user ? 6 : 12}
+				justifyContent="center"
+				alignItems="center"
+				direction="column"
+			>
+				<Box>
+					<Grid item>
+						<Typography
+							variant="h2"
+							align="center"
+							sx={{
+								color: (theme) =>
+									theme.palette.mode === "light"
+										? theme.palette.secondary.light
+										: theme.palette.secondary.main,
+								fontWeight: "medium",
+							}}
+						>
+							{user ? "NSTX Wallet" : "Welcome to NSTX"}
+						</Typography>
+					</Grid>
+					<Grid item>
+						<Typography
+							variant="h3"
+							align="center"
+							sx={{
+								color: (theme) =>
+									theme.palette.mode === "light" ? "#171723" : "#eeeeee",
+							}}
+						>
+							LEARN • BUILD • INNOVATE
+						</Typography>
+					</Grid>
+					<Grid>
+						{user ? (
+							<Typography
+								variant="h4"
+								align="center"
+								sx={{
+									color: (theme) =>
+										theme.palette.mode === "light" ? "#171723" : "#eeeeee",
+								}}
+							>
+								Welcome {user.firstName}
+							</Typography>
+						) : (
+							<Grid item marginTop={6}>
+								<Button
+									sx={{
+										height: 50,
+										width: 200,
+										backgroundColor: (theme) =>
+											theme.palette.mode === "light"
+												? theme.palette.secondary.light
+												: theme.palette.secondary.main,
+										color: (theme) =>
+											theme.palette.mode === "light" ? "#171723" : "#eeeeee",
+									}}
+									variant="contained"
+									onClick={handleOpenForm}
+									size="large"
+								>
+									Sign in
+								</Button>
+							</Grid>
+						)}
+					</Grid>
+				</Box>
+			</Grid>
+
+			<Grid
+				flexDirection={"column"}
+				item
+				xs={user ? 6 : 12}
 				sx={{
 					display: "flex",
 					justifyContent: "center",
 					alignItems: "center",
 				}}
 			>
-				<Paper
-					elevation={24}
-					sx={{
-						padding: 10,
-					}}
-				>
-					<Box sx={{ display: "flex", justifyContent: "center" }}>
-						<Avatar
-							src={"https://i.pravatar.cc/300"}
+				{!user && (
+					<Grid item>
+						<Typography
+							variant="h5"
+							align="center"
 							sx={{
-								width: 60,
-								height: 60,
-								margin: "auto",
+								color: (theme) =>
+									theme.palette.mode === "light" ? "#171723" : "#eeeeee",
 							}}
-						/>
-					</Box>
-					<Box sx={{ display: "flex", justifyContent: "center" }}>
-						<Typography component="h1" variant="h5">
-							Sign in
+						>
+							Sign in to view the latest cryptocurrency prices
 						</Typography>
-					</Box>
-					<form onSubmit={formik.handleSubmit}>
-						<Box sx={{ mt: 3 }}>
-							<Grid container spacing={2}>
-								<Grid item xs={12}>
-									<TextField
-										fullWidth
-										id="email"
-										name="email"
-										label="email"
-										value={formik.values.email}
-										onChange={formik.handleChange}
-										onBlur={formik.handleBlur}
-									/>
-								</Grid>
-								<Grid item xs={12}>
-									<TextField
-										fullWidth
-										id="password"
-										name="password"
-										label="Password"
-										type="password"
-										value={formik.values.password}
-										onChange={formik.handleChange}
-										onBlur={formik.handleBlur}
-									/>
-								</Grid>
-							</Grid>
-							<Button
-								type="submit"
-								fullWidth
-								variant="contained"
-								sx={{ mt: 3, mb: 2 }}
-							>
-								Sign In
-							</Button>
-							<Grid container justifyContent="flex-end">
-								<Grid item>
-								<Button variant={'text'} to={'/sign-up'} component={Link}>
-									Sign up
-								</Button>
-								</Grid>
-							</Grid>
-						</Box>
-					</form>
-				</Paper>
-			</Box>
+					</Grid>
+				)}
+				{user && <CoinMarketCapTable />}
+			</Grid>
+			<LoginDialog open={open} onClose={() => setOpen(false)} formik={formik} />
 		</Grid>
 	);
 };

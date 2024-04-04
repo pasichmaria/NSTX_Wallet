@@ -1,31 +1,34 @@
-import {Avatar, Button, Drawer, Grid, List, ListItem, ListItemIcon, ListItemText, Typography,} from "@mui/material";
-import {MdOutlineRecentActors, MdSettings, MdTrackChanges, MdWallet} from "react-icons/md";
-import {Link as RouterLink} from "react-router-dom";
+import {
+	Avatar,
+	Button,
+	Drawer,
+	Grid,
+	List,
+	ListItem,
+	ListItemIcon,
+	ListItemText,
+	Typography,
+} from "@mui/material";
+import {
+	MdOutlineRecentActors,
+	MdSettings,
+	MdTrackChanges,
+	MdWallet,
+} from "react-icons/md";
+import { Link as RouterLink } from "react-router-dom";
 
-import {useLogout} from "../hooks";
-import {User} from "../interfaces";
+import { useContext } from "react";
+import { User } from "../interfaces";
+import { ThemeContext } from "../theme.tsx";
 
 interface SidebarProps {
 	open: boolean;
 	user?: User;
 	handleDrawerClose: () => void;
-	isMobile: boolean;
 }
 
-export const Sidebar = ({
-	user,
-	open,
-	handleDrawerClose,
-	isMobile,
-}: SidebarProps) => {
-	const { logout } = useLogout({
-		onSuccess: () => {
-			console.log("Logout success");
-		},
-		onError: () => {
-			console.log("Logout error");
-		},
-	});
+export const Sidebar = ({ user, open, handleDrawerClose }: SidebarProps) => {
+	const isMobile = useContext(ThemeContext).isMobile;
 	return (
 		<Drawer
 			variant="temporary"
@@ -34,15 +37,23 @@ export const Sidebar = ({
 			onClose={handleDrawerClose}
 			sx={{
 				"& .MuiDrawer-paper": {
-					width: isMobile ? "100%" : "380px",
+					width: isMobile ? "100%" : "300px",
 					boxSizing: "border-box",
-					borderRadius: "0px 25px 25px 0px ",
-					backgroundImage: " linear-gradient(180deg, #FFC107 0%, #FF8F00 100%)",
-					textColor: "black",
+					borderRadius: "0px 25px 25px 0px",
+					backgroundColor: "#1D1F2E",
+					color: "white",
 				},
 			}}
 		>
-			<Grid container direction="row" alignItems="center" margin="20px">
+			<Grid
+				container
+				direction="row"
+				alignItems="center"
+				sx={{
+					padding: "20px",
+					position: "relative",
+				}}
+			>
 				<Grid
 					item
 					sx={{
@@ -65,37 +76,27 @@ export const Sidebar = ({
 					<Typography
 						variant="h6"
 						sx={{
-							color: "black",
+							color: "white",
 						}}
 					>
 						{user?.firstName} {user?.lastName}
 					</Typography>
 				</Grid>
-				<Grid item sx={{ marginLeft: "auto" }}>
+				<Grid item sx={{ right: 0, position: "absolute" }}>
 					<Button
 						variant="contained"
 						startIcon={<MdSettings />}
 						component={RouterLink}
 						to={"/settings"}
 						sx={{
-							color: "black",
+							color: "white",
 							marginRight: 2,
 						}}
 					/>
 				</Grid>
 			</Grid>
-			<Grid
-				container={true}
-				justifyContent="center"
-				sx={{
-					mt: 2,
-				}}
-			/>
-
-
 			<CustomListItems />
 			{isMobile && <Button onClick={handleDrawerClose}>Close</Button>}
-			{user && <Button onClick={() => logout()}>Logout</Button>}
 		</Drawer>
 	);
 };
@@ -105,14 +106,14 @@ export const CustomListItems = () => {
 		<List
 			sx={{
 				"& .MuiListItem-root": {
-					color: "black",
+					color: "white",
 					padding: "20px",
 					"&:hover": {
 						backgroundColor: "rgba(0, 0, 0, 0.34)",
 						transition: "background-color 0.4s ease-in-out",
 					},
 					"& .MuiListItemIcon-root": {
-						color: "black",
+						color: "white",
 					},
 				},
 			}}

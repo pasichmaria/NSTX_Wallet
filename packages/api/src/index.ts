@@ -8,48 +8,54 @@ import Fastify, { FastifyBaseLogger } from "fastify";
 import { UsersModule } from "./module/users";
 import { BalanceModule } from "./module/balances";
 import { TransactionModule } from "./module/transactions";
+import {CoinMarketCapModule} from "./module/coinMarketCup/CoinMarketCapModule";
 
 async function start() {
-	const logger = pino();
-	const fastify = Fastify({
-		logger: logger as FastifyBaseLogger,
-	});
+  const logger = pino();
+  const fastify = Fastify({
+    logger: logger as FastifyBaseLogger,
+  });
 
-	const prisma = new PrismaClient();
+  const prisma = new PrismaClient();
 
-	await fastify.register(FastifyJwt, {
-		secret: "supersecret",
-		cookie: {
-			cookieName: "token",
-			signed: false,
-		},
-		decode: {
-			complete: true,
-		},
-	});
-	await fastify.register(FastifyCookie, {});
-	await fastify.register(FastifyFormBody);
-	await fastify.register(FastifyCors, {
-		origin: "http://localhost:5173",
-		credentials: true,
-	});
+  await fastify.register(FastifyJwt, {
+    secret: "supersecret",
+    cookie: {
+      cookieName: "token",
+      signed: false,
+    },
+    decode: {
+      complete: true,
+    },
+  });
+  await fastify.register(FastifyCookie, {});
+  await fastify.register(FastifyFormBody);
+  await fastify.register(FastifyCors, {
+    origin: "http://localhost:5173",
+    credentials: true,
+  });
 
-	const _usersModule = await UsersModule.init({ fastify, prisma });
-	const _balanceModule = await BalanceModule.Init({ fastify, prisma });
-	const _transactionModule = await TransactionModule.init({ fastify, prisma });
+  const _usersModule = await UsersModule.init({ fastify, prisma });
+  const _balanceModule = await BalanceModule.Init({ fastify, prisma });
+  const _transactionModule = await TransactionModule.init({ fastify, prisma });
+  const _coinMarketCapModule = await CoinMarketCapModule.init({
+    fastify,
+    prisma,
+  });
 
-	fastify.setNotFoundHandler((_req, reply) => {
-		return reply.send("Not Found");
-	});
 
-	fastify.get("/", async (_req, reply) => {
-		return reply.send("Hello World");
-	});
+  fastify.setNotFoundHandler((_req, reply) => {
+    return reply.send("Not Found");
+  });
 
-	fastify.listen({ port: 8000 }, (err) => {
-		if (err) throw err;
-		console.log("SERVER IS RUNNING ON PORT 8000");
-	});
+  fastify.get("/", async (_req, reply) => {
+    return reply.send("Hello World");
+  });
+
+  fastify.listen({ port: 8000 }, (err) => {
+    if (err) throw err;
+    console.log("SERVER IS RUNNING ON PORT 8000");
+  });
 }
 
 void start();

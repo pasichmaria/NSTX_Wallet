@@ -3,9 +3,7 @@
     "files": true
   },
   "extends": "@tsconfig/recommended/tsconfig.json",
-  "include": [
-    "src/**/*.ts"
-  ],
+  "include": ["src/**/*.ts"],
   "compilerOptions": {
     "declaration": true,
     "experimentalDecorators": true,

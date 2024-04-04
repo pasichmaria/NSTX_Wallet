@@ -1,52 +1,49 @@
-import {Box, Grid, Typography} from "@mui/material";
-import {BigButton} from "../../components";
-import {useNavigate} from "react-router-dom";
-import {User} from "../../interfaces";
+import { useNavigate } from "react-router-dom";
+import { Grid } from "@mui/material";
 
-export const SettingsPage = ({user}: { user: User }) => {
+import { BigButton } from "../../components";
+import { User } from "../../interfaces";
+
+export const SettingsPage = ({ user }: { user: User }) => {
 	const navigate = useNavigate();
 
 	return (
-			<Grid container spacing={3} flexDirection="column">
-				<Typography variant="h4" align="center" gutterBottom>
-				Settings {user.email}
-			</Typography>
-			<Grid item>
-				<Box>
+		user && (
+			<Grid
+				container
+				spacing={2}
+				flexDirection={"column"}
+				justifyContent={"center"}
+				alignItems={"center"}
+			>
+				<Grid item xs={4}>
 					<BigButton
-						fullWidth
-						variant="contained"
-						color="primary"
-						onClick={() => navigate("/settings/change-password")}
+						onClick={() => {
+							navigate("/settings/profile");
+						}}
 					>
-						Change Password
+						Profile
 					</BigButton>
-				</Box>
-			</Grid>
-			<Grid item >
-				<Box>
+				</Grid>
+				<Grid item xs={4}>
 					<BigButton
-						fullWidth
-						variant="contained"
-						color="primary"
-						onClick={() => navigate("/settings/change-email")}
+						onClick={() => {
+							navigate("/settings/security");
+						}}
 					>
-						Change Email
+						Security
 					</BigButton>
-				</Box>
-			</Grid>
-			<Grid item >
-				<Box>
+				</Grid>
+				<Grid item xs={4}>
 					<BigButton
-						variant="contained"
-						fullWidth
-						color="primary"
-						onClick={() => navigate("/settings/delete-account")}
+						onClick={() => {
+							navigate("/settings/notifications");
+						}}
 					>
-						Delete Account
+						Notifications
 					</BigButton>
-				</Box>
+				</Grid>
 			</Grid>
-		</Grid>
+		)
 	);
 };

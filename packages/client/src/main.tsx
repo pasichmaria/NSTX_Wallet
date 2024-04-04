@@ -15,6 +15,8 @@ const root = ReactDOM.createRoot(
 );
 const queryClient = new QueryClient();
 
+queryClient.invalidateQueries("user").then((r) => r);
+
 root.render(
 	<React.StrictMode>
 		<CookiesProvider>

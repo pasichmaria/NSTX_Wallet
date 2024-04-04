@@ -10,53 +10,58 @@ interface CurrencyCardProps {
 }
 
 const CurrencyCardContainer = styled.div`
-    width: 342px;
-    height: 80px;
-    background: linear-gradient(126.97deg, rgb(61, 63, 65) 28.26%, rgb(61, 63, 65) 28.26%, rgb(61, 63, 65) 28.26%);
-    backdrop-filter: blur(60px);
-    border-radius: 20px;
-    margin-bottom: 20px;
+  width: 342px;
+  height: 80px;
+  background: linear-gradient(
+    126.97deg,
+    rgb(61, 63, 65) 28.26%,
+    rgb(61, 63, 65) 28.26%,
+    rgb(61, 63, 65) 28.26%
+  );
+  backdrop-filter: blur(60px);
+  border-radius: 20px;
+  margin-bottom: 20px;
 `;
 
 const CardContent = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 10px;
-    height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 10px;
+  height: 100%;
 `;
 
 const CurrencyInfo = styled.div`
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 `;
 
 const IconContainer = styled.div`
-    margin-right: 10px;
-    color: white; /* Color for the icon */
+  margin-right: 10px;
+  color: white; /* Color for the icon */
 `;
 
 const CurrencyLabel = styled.div`
-    font-size: 16px;
-    font-weight: bold;
-    color: white;
+  font-size: 16px;
+  font-weight: bold;
+  color: white;
 `;
 
 const PercentageLabel = styled.div`
-    font-size: 14px;
-    color: white;
-    opacity: 0.8;
+  font-size: 14px;
+  color: white;
+  opacity: 0.8;
 `;
 const CurrencyButton = styled(Button)`
-    padding: 0;
-    color: #030302;
-    background: none;
-    border: none;
-    font-size: 24px;
+  padding: 0;
+  color: #030302;
+  background: none;
+  border: none;
+  font-size: 24px;
 
-    &:hover {
-        color: #FCD535;
-    }
+  &:hover {
+    color: #fcd535;
+  }
 `;
 
 const CryptoCard: React.FC<CurrencyCardProps> = ({

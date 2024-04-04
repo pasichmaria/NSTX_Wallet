@@ -1,12 +1,14 @@
-import {Box,Grid} from "@mui/material";
-import {useNavigate} from "react-router-dom";
-import {BigButton} from "../../components";
+import { Box, Grid } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+
+import { BigButton } from "../../components";
 
 export const PaymentsPage = () => {
 	const navigate = useNavigate();
+
 	return (
-		<Grid container spacing={3}>
-			<Grid item xs={12} sm={4}>
+		<Grid container spacing={3} justifyContent={"center"} alignItems={"center"}>
+			<Grid item xs={12} sm={3}>
 				<Box>
 					<BigButton
 						fullWidth
@@ -18,8 +20,8 @@ export const PaymentsPage = () => {
 					</BigButton>
 				</Box>
 			</Grid>
-			<Grid item xs={12} sm={4}>
-				<Box  >
+			<Grid item xs={12} sm={3}>
+				<Box>
 					<BigButton
 						fullWidth
 						variant="contained"
@@ -30,8 +32,8 @@ export const PaymentsPage = () => {
 					</BigButton>
 				</Box>
 			</Grid>
-			<Grid item xs={12} sm={4}>
-				<Box >
+			<Grid item xs={12} sm={3}>
+				<Box>
 					<BigButton
 						variant="contained"
 						fullWidth

@@ -1,95 +1,104 @@
-import {Box, Grid, Paper, TextField, Typography} from "@mui/material";
-import {useNavigate} from "react-router-dom";
-import {useFormik} from "formik";
+import {
+  CircularProgress,
+  Grid,
+  MenuItem,
+  Select,
+  TextField,
+  Typography
+} from "@mui/material";
+import { useFormik } from "formik";
 
-import {BigButton} from "../../components";
-
+import { BigButton, CardInfoBalance } from "../../components";
+import { useBalances, useUser } from "../../hooks";
 
 export const NSTXPaymentPage = () => {
-	const navigate = useNavigate();
+  const { user } = useUser();
+  const { balances, isLoading } = useBalances({
+    userId: user?.id || ""
+  });
 
-	const formik = useFormik({
-		initialValues: {
-			recipient: "",
-			amount: 0,
-			description: "",
-		},
-		onSubmit: (_values) => {
-			navigate("/transaction");
-		},
-	});
+  const formik = useFormik({
+    initialValues: {
+      senderId: null,
+      currency: "USDT",
+      value: "",
+      recipient: ""
+    },
+    onSubmit: values => {
+      console.log(values);
+    }
+  });
 
-	return (
-		<>
-		<Typography variant="h4" align="center" gutterBottom>
-			Transfer NSTX
-		</Typography>
-		<Grid
-			component={Paper}
-			container
-			justifyContent="center"
-			alignItems="center"
-			sx={{
-				boxShadow: 6,
-				transition : "0.3s",
-				padding: 6,
-			}}
-		>
-				<form onSubmit={formik.handleSubmit}>
-					<Box sx={{ marginBottom: 2 }}>
-						<TextField
-							fullWidth
-							label="Recipient"
-							name="recipient"
-							value={formik.values.recipient}
-							onChange={formik.handleChange}
-						/>
-					</Box>
-					<Box sx={{ marginBottom: 4}}>
-						<TextField
-							fullWidth
-							label="Amount"
-							name="amount"
-							value={formik.values.amount}
-							onChange={formik.handleChange}
-						/>
-						<TextField
-							fullWidth
-							label="Description"
-							name="description"
-							sx={{mt : 2
-                        }}
-							value={formik.values.description}
-							onChange={formik.handleChange}
-						/>
+  if (isLoading || !balances) {
+    return <CircularProgress />;
+  }
 
-					</Box>
+  const handleChoseBalance = (id: string) => {
+    formik.setFieldValue("senderId", id);
+  };
 
-					<Grid container direction="row" spacing={2}>
-						<Grid item xs={6}>
-							<BigButton
-								type="button"
-								fullWidth
-								variant="contained"
-								color="primary"
-								onClick={() => navigate("/payments")}
-							>
-								Cancel
-							</BigButton>
-						</Grid>
-						<Grid item xs={6}>
-							<BigButton
-								fullWidth
-								type="submit"
-								variant="contained"
-								color="primary"
-							>
-								Transfer
-							</BigButton>
-						</Grid>
-					</Grid>
-				</form>
-			</Grid>
-			</>
-	)
+  return (
+    <Grid container justifyContent="center" alignItems="center" spacing={2}>
+      <Grid item xs={10} lg={6}>
+        <form onSubmit={formik.handleSubmit}>
+          <Typography variant="h4" gutterBottom>
+            Send NSTX
+          </Typography>
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                id="recipient"
+                name="recipient"
+                label="Recipient"
+                value={formik.values.recipient}
+                onChange={formik.handleChange}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <Select
+                fullWidth
+                id="currency"
+                name="currency"
+                label="Currency"
+                value={formik.values.currency}
+                onChange={event =>
+                  formik.setFieldValue("currency", event.target.value)
+                }
+              >
+                <MenuItem value="USDT">USDT</MenuItem>
+                <MenuItem value="USD">USD</MenuItem>
+                <MenuItem value="BTC">BTC</MenuItem>
+              </Select>
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                id="value"
+                name="value"
+                label="Value"
+                value={formik.values.value}
+                onChange={formik.handleChange}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <Grid container spacing={2}>
+                {balances.map(balance => (
+                  <Grid item xs={6} key={balance.id}>
+                    <CardInfoBalance
+                      balance={balance}
+                      onClick={() => handleChoseBalance(balance.id)}
+                    />
+                  </Grid>
+                ))}
+              </Grid>
+            </Grid>
+            <Grid item xs={12}>
+              <BigButton type="submit">Send</BigButton>
+            </Grid>
+          </Grid>
+        </form>
+      </Grid>
+    </Grid>
+  );
 };

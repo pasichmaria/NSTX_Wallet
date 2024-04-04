@@ -1,12 +1,14 @@
-import {Avatar, Box, Button, Grid, Paper, TextField, Typography,} from "@mui/material";
-
-import {useFormik} from "formik";
-import {Link, useNavigate} from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom"
+import { Button, Grid, Paper, TextField, Typography } from "@mui/material";
+import { useFormik } from "formik";
 import * as Yup from "yup";
-import {register} from "../../API";
+
+import { register } from "../../API";
+import Logo from "../../assets/logo";
 
 export const SignUpPage = () => {
 	const navigate = useNavigate();
+
 	const formik = useFormik({
 		initialValues: {
 			email: "",
@@ -23,133 +25,103 @@ export const SignUpPage = () => {
 
 		onSubmit: async (values) => {
 			await register(values);
-			navigate("/login");
+			navigate("/");
 		},
 	});
 
 	return (
-		<Grid container>
-			<Grid item xs={12} md={6}>
-				<Box
+		<Grid container justifyContent={"center"}>
+			<Grid item xs={12} lg={4}>
+				<Paper
 					sx={{
-						display: "flex",
-						justifyContent: "center",
-						alignItems: "center",
-						height: "100vh",
+						padding: 4,
+						borderRadius: 2,
+						boxShadow: "0px 0px 10px 0px #27DEBF",
+						textAlign: "center",
 					}}
 				>
-					<Paper
-						elevation={24}
-						sx={{ p: 6, backgroundColor: "rgba(255, 255, 255, 0.8)" }}
-					>
-						<Box sx={{ textAlign: "center", mb: 3 }}>
-							<Avatar
-								src={"https://i.pravatar.cc/300"}
-								sx={{ width: 60, height: 60 }}
-							/>
-							<Typography variant="h5" mt={2}>
-								Register
-							</Typography>
-						</Box>
-						<form onSubmit={formik.handleSubmit}>
-							<Grid container spacing={2}>
-								<Grid item xs={12}>
-									<TextField
-										fullWidth
-										id="email"
-										name="email"
-										label="Email"
-										value={formik.values.email}
-										onChange={formik.handleChange}
-										onBlur={formik.handleBlur}
-										error={formik.touched.email && Boolean(formik.errors.email)}
-										helperText={formik.touched.email && formik.errors.email}
-									/>
-								</Grid>
-								<Grid item xs={12}>
-									<TextField
-										fullWidth
-										id="password"
-										name="password"
-										label="Password"
-										type="password"
-										value={formik.values.password}
-										onChange={formik.handleChange}
-										onBlur={formik.handleBlur}
-										error={
-											formik.touched.password && Boolean(formik.errors.password)
-										}
-										helperText={
-											formik.touched.password && formik.errors.password
-										}
-									/>
-								</Grid>
-								<Grid item xs={12}>
-									<TextField
-										fullWidth
-										id="firstName"
-										name="firstName"
-										label="First Name"
-										value={formik.values.firstName}
-										onChange={formik.handleChange}
-										onBlur={formik.handleBlur}
-										error={
-											formik.touched.firstName &&
-											Boolean(formik.errors.firstName)
-										}
-										helperText={
-											formik.touched.firstName && formik.errors.firstName
-										}
-									/>
-								</Grid>
-								<Grid item xs={12}>
-									<TextField
-										fullWidth
-										id="lastName"
-										name="lastName"
-										label="Last Name"
-										value={formik.values.lastName}
-										onChange={formik.handleChange}
-										onBlur={formik.handleBlur}
-										error={
-											formik.touched.lastName && Boolean(formik.errors.lastName)
-										}
-										helperText={
-											formik.touched.lastName && formik.errors.lastName
-										}
-									/>
-								</Grid>
+					<Grid item sx={{ m: 2 }}>
+						<Logo />
+					</Grid>
+					<form onSubmit={formik.handleSubmit}>
+						<Grid container spacing={2}>
+							<Grid item xs={12}>
+								<TextField
+									fullWidth
+									id="email"
+									name="email"
+									label="Email"
+									value={formik.values.email}
+									onChange={formik.handleChange}
+									error={formik.touched.email && Boolean(formik.errors.email)}
+									helperText={formik.touched.email && formik.errors.email}
+								/>
 							</Grid>
-							<Button
-								type="submit"
-								fullWidth
-								variant="contained"
-								sx={{ mt: 3 }}
-							>
-								Register
-							</Button>
-							<Box mt={2} textAlign="right">
-								<Button component={Link} variant={'text'} to={'/login'}>
-									Sign in
+							<Grid item xs={12}>
+								<TextField
+									fullWidth
+									id="password"
+									name="password"
+									label="Password"
+									type="password"
+									value={formik.values.password}
+									onChange={formik.handleChange}
+									error={
+										formik.touched.password && Boolean(formik.errors.password)
+									}
+									helperText={formik.touched.password && formik.errors.password}
+								/>
+							</Grid>
+							<Grid item xs={12}>
+								<TextField
+									fullWidth
+									id="firstName"
+									name="firstName"
+									label="First Name"
+									value={formik.values.firstName}
+									onChange={formik.handleChange}
+									onBlur={formik.handleBlur}
+									error={
+										formik.touched.firstName && Boolean(formik.errors.firstName)
+									}
+									helperText={
+										formik.touched.firstName && formik.errors.firstName
+									}
+								/>
+							</Grid>
+							<Grid item xs={12}>
+								<TextField
+									fullWidth
+									id="lastName"
+									name="lastName"
+									label="Last Name"
+									value={formik.values.lastName}
+									onChange={formik.handleChange}
+									onBlur={formik.handleBlur}
+									error={
+										formik.touched.lastName && Boolean(formik.errors.lastName)
+									}
+									helperText={formik.touched.lastName && formik.errors.lastName}
+								/>
+							</Grid>
+							<Grid item xs={12}>
+								<Button
+									type="submit"
+									fullWidth
+									variant="contained"
+									color="secondary"
+								>
+									Register
 								</Button>
-							</Box>
-						</form>
-					</Paper>
-				</Box>
-			</Grid>
-			<Grid item xs={12} md={6}>
-				<Box
-					sx={{
-						display: "flex",
-						justifyContent: "center",
-						alignItems: "center",
-						height: "100vh",
-						backgroundImage:
-							"url(https://images.unsplash.com/photo-1629914390416-8b9b8b5b5b0a?ixid=MnwxMjA3fDB8MHx0b3BpYy1mZWVkfDQwfHh4Z0J0Z0JfZ0J8fGVufDB8fHx8&ixlib=rb-1.2.1&w=1000&q=80)",
-						backgroundSize: "cover",
-						backgroundPosition: "center",
-					}}
-				/>
+							</Grid>
+						</Grid>
+						<Grid item sx={{ mt: 5 }}>
+							<Typography variant="body2" alignItems="end">
+								Already have an account? <Link to="/login">Sign In</Link>
+							</Typography>
+						</Grid>
+					</form>
+				</Paper>
 			</Grid>
 		</Grid>
 	);

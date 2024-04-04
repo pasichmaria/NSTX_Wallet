@@ -1,22 +1,23 @@
-import {Box} from "@mui/material";
-
-import {Footer} from "./Footer";
-import {Header} from "./Header";
-import {User} from "../interfaces";
+import { Box, Grid } from "@mui/material";
 import React from "react";
+
+import { User } from "../interfaces";
+import { Header } from "./Header";
 
 interface LayoutProps {
 	children: React.ReactNode;
 	user?: User;
+	getUser: () => void;
 }
-export const Layout = ({ children, user }: LayoutProps) => {
+export const Layout = ({ children, user, getUser }: LayoutProps) => {
 	return (
-		<>
-			<Header user={user} />
-			<Box component="main" sx={{ flexGrow: 1, mt: 8 }}>
-				{children}
-			</Box>
-			<Footer />
-		</>
+		<Grid container>
+			<Grid item xs={12}>
+				<Header user={user} getUser={getUser} />
+			</Grid>
+			<Grid item xs={12}>
+				<Box p={2}>{children}</Box>
+			</Grid>
+		</Grid>
 	);
 };

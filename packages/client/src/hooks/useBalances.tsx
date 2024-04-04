@@ -1,6 +1,6 @@
-import {useQuery} from "react-query";
+import { useQuery } from "react-query";
 
-import {getUserBalance, getUserBalances} from "../API";
+import { getUserBalance, getUserBalances } from "../API";
 
 export const useBalances = ({ userId }: { userId: string }) => {
 	const balancesQuery = useQuery("balances", () => getUserBalances({ userId }));

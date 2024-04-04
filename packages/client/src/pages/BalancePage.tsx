@@ -2,7 +2,7 @@ import { CircularProgress, Grid, Typography } from "@mui/material";
 import { useParams } from "react-router-dom";
 
 import { useBalance } from "../hooks";
-import {User} from "../interfaces";
+import { User } from "../interfaces";
 
 export const BalancePage = ({ user }: { user: User }) => {
 	const params = useParams();

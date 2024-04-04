@@ -1,10 +1,13 @@
-import {useNavigate} from "react-router-dom";
-import {Button, Grid, TextField, useMediaQuery} from "@mui/material";
-import notfound from '../../assets/notfoundcat.svg'
-import {BigButton} from "../../components";
+import { Button, Grid, TextField } from "@mui/material";
+import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
+
+import notfound from "../../assets/notfoundcat.svg";
+import { BigButton } from "../../components";
+import { ThemeContext } from "../../theme";
 
 export const NotFoundPage = () => {
-	const isMobile = useMediaQuery("(max-width:600px)");
+	const isMobile = useContext(ThemeContext).isMobile;
 	const navigate = useNavigate();
 
 	const handleReturnToLogin = () => {
@@ -52,9 +55,9 @@ export const NotFoundPage = () => {
 						width: "100%",
 						marginTop: "2rem",
 					}}
-				>Contact Us
+				>
+					Contact Us
 				</Button>
-
 
 				<BigButton
 					onClick={handleReturnToLogin}

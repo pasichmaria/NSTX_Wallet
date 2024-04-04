@@ -1,0 +1,11 @@
+import { useQuery } from "react-query";
+import { getCoinMarketCup } from "../API/coinMarketCup.tsx";
+
+export const useCoinMarketCup = () => {
+	const coinMarketCupQuery = useQuery("coinMarketCup", getCoinMarketCup);
+	return {
+		coinMarketCup: coinMarketCupQuery.data,
+		isLoading: coinMarketCupQuery.isLoading,
+		isError: coinMarketCupQuery.isError,
+	};
+};
