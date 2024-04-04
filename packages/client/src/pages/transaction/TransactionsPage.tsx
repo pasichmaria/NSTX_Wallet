@@ -1,173 +1,118 @@
-import { useEffect } from "react";
+import React from "react";
 import {
-	Container,
-	Grid,
-	Paper,
-	TextField,
-	Select,
-	MenuItem,
-	FormControl,
-	Table,
-	TableBody,
-	TableCell,
-	TableContainer,
-	TableHead,
-	TableRow,
-	TableSortLabel,
-	IconButton,
-	TablePagination,
+  Grid,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TablePagination,
+  TableRow,
+  Typography
 } from "@mui/material";
-import { AiOutlineFieldTime } from "react-icons/ai";
-import { BiSearch } from "react-icons/bi";
-import { ImCancelCircle } from "react-icons/im";
-import { IoCheckmarkDoneOutline } from "react-icons/io5";
-import { TransactionsPageLogic } from "../../utils";
-import { User } from "../../interfaces";
+import { useTransactions } from "../../hooks";
+import { Transaction, User } from "../../interfaces";
+import { Link } from "react-router-dom";
+import { TransactionsList } from "./TransactionsList";
 
 export const TransactionsPage = ({ user }: { user: User }) => {
-	const {
-		transactions,
-		searchTerm,
-		handleSearch,
-		filteredTransactions,
-		sortBy,
-		sortOrder,
-		handleSort,
-		currencyFilter,
-		handleCurrencyFilterChange,
-		typeFilter,
-		handleTypeFilterChange,
-		page,
-		rowsPerPage,
-		handleChangePage,
-		handleChangeRowsPerPage,
-		setFilteredTransactions,
-	} = TransactionsPageLogic({ user });
+  const { transactions } = useTransactions({ user });
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [isMobile, setIsMobile] = React.useState<boolean>(false);
 
-	useEffect(() => {
-		setFilteredTransactions(transactions)
-	}, [transactions]);
+  React.useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 800);
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
-	return (
-		<Container sx={{ mt: 2 }}>
-			<Grid container spacing={2} direction="row">
-				<Grid item xs={12}>
-					<TableContainer component={Paper} sx={{ padding: 2 }}>
-						<TextField
-							label="Search"
-							value={searchTerm}
-							onChange={(e) => handleSearch(e.target.value)}
-							InputProps={{
-								startAdornment: (
-									<IconButton disabled>
-										<BiSearch />
-									</IconButton>
-								),
-							}}
-						/>
-						<FormControl>
-							<Select
-								value={currencyFilter}
-								onChange={handleCurrencyFilterChange}
-								displayEmpty
-								inputProps={{ "aria-label": "Currency" }}
-							>
-								<MenuItem value="All">All Currencies</MenuItem>
-								<MenuItem value="USD">USD</MenuItem>
-								<MenuItem value="USDT">USDT</MenuItem>
-								<MenuItem value="UAH">UAH</MenuItem>
-							</Select>
-						</FormControl>
-						<FormControl>
-							<Select
-								value={typeFilter}
-								onChange={handleTypeFilterChange}
-								displayEmpty
-								inputProps={{ "aria-label": "Transaction Type" }}
-							>
-								<MenuItem value="All">All Types</MenuItem>
-								<MenuItem value="deposit">Deposit</MenuItem>
-								<MenuItem value="withdraw">Withdrawal</MenuItem>
-							</Select>
-						</FormControl>
-						<Table>
-							<TableHead>
-								<TableRow>
-									<TableCell>
-										<TableSortLabel
-											active={sortBy === "status"}
-											direction={sortBy === "status" ? sortOrder : "asc"}
-											onClick={() => handleSort("status")}
-										>
-											Status
-										</TableSortLabel>
-									</TableCell>
-									<TableCell>
-										<TableSortLabel
-											active={sortBy === "type"}
-											direction={sortBy === "type" ? sortOrder : "asc"}
-											onClick={() => handleSort("type")}
-										>
-											Type
-										</TableSortLabel>
-									</TableCell>
-									<TableCell>
-										<TableSortLabel
-											active={sortBy === "amount"}
-											direction={sortBy === "amount" ? sortOrder : "asc"}
-											onClick={() => handleSort("amount")}
-										>
-											Amount
-										</TableSortLabel>
-									</TableCell>
-									<TableCell>Currency</TableCell>
-								</TableRow>
-							</TableHead>
-							<TableBody>
-								{filteredTransactions
-									?.slice(page * rowsPerPage, (page + 1) * rowsPerPage)
-									.map((transaction) => (
-										<TableRow key={transaction.id}>
-											<TableCell>
-												<IconButton disabled>
-													{transaction.status === "completed" ? (
-														<IoCheckmarkDoneOutline />
-													) : transaction.status === "pending" ? (
-														<AiOutlineFieldTime />
-													) : (
-														<ImCancelCircle />
-													)}
-												</IconButton>
-											</TableCell>
-											<TableCell>{transaction.type}</TableCell>
-											<TableCell
-												sx={{
-													color:
-														transaction.type === "deposit"
-															? "limegreen"
-															: "orangered",
-												}}
-											>
-												{transaction.type === "deposit" ? "+" : "-"}{" "}
-												{transaction.amount}
-											</TableCell>
-											<TableCell>{transaction.currency}</TableCell>
-										</TableRow>
-									))}
-							</TableBody>
-						</Table>
-						<TablePagination
-							rowsPerPageOptions={[5, 10, 25]}
-							component="div"
-							count={filteredTransactions?.length || 0}
-							rowsPerPage={rowsPerPage}
-							page={page}
-							onPageChange={handleChangePage}
-							onRowsPerPageChange={handleChangeRowsPerPage}
-						/>
-					</TableContainer>
-				</Grid>
-			</Grid>
-		</Container>
-	);
+  const handleChangePage = (
+    _event: React.MouseEvent<HTMLButtonElement> | null,
+    newPage: number
+  ) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
+  if (isMobile) {
+    return (
+      <TransactionsList
+        transactions={transactions}
+        page={page}
+        rowsPerPage={rowsPerPage}
+        handleChangePage={handleChangePage}
+        handleChangeRowsPerPage={handleChangeRowsPerPage}
+      />
+    );
+  }
+
+  return (
+    <Grid container justifyContent="center" alignItems="center" spacing={2}>
+      <Grid item xs={12} sm={10}>
+        <Link to="/">
+          <Typography
+            variant="h6"
+            sx={{ marginBottom: 2, marginTop: 2 }}
+            align={"right"}
+          >
+            Go to profile page &gt;
+          </Typography>
+        </Link>
+        <TableContainer
+          component={Paper}
+          sx={{
+            width: "100%",
+            padding: "10px",
+            boxShadow: 24,
+            borderRadius: "25px"
+          }}
+        >
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>ID</TableCell>
+                <TableCell>Type</TableCell>
+                <TableCell>Amount</TableCell>
+                <TableCell>Currency</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {transactions
+                ?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map((transaction: Transaction) => (
+                  <TableRow key={transaction.id}>
+                    <TableCell>{transaction.id}</TableCell>
+                    <TableCell>{transaction.type}</TableCell>
+                    <TableCell>{transaction.amount}</TableCell>
+                    <TableCell>{transaction.currency}</TableCell>
+                  </TableRow>
+                ))}
+            </TableBody>
+          </Table>
+          <Grid container justifyContent="center">
+            <TablePagination
+              rowsPerPageOptions={[5, 10, 25]}
+              component="div"
+              count={transactions?.length || 0}
+              rowsPerPage={rowsPerPage}
+              page={page}
+              onPageChange={handleChangePage}
+              onRowsPerPageChange={handleChangeRowsPerPage}
+            />
+          </Grid>
+        </TableContainer>
+      </Grid>
+    </Grid>
+  );
 };

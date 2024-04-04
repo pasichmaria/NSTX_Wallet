@@ -1,43 +1,57 @@
-import {Suspense} from "react";
-import {Route, Routes} from "react-router-dom";
+import { CircularProgress, CssBaseline } from "@mui/material";
+import { Suspense } from "react";
+import { Route, Routes } from "react-router-dom";
+import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
-import {CircularProgress, CssBaseline} from "@mui/material";
 
-import {useUser} from "./hooks";
-import {Layout} from "./layout";
-import {LoginPage, NotFoundPage, NSTXPaymentPage, PaymentsPage, SignUpPage} from "./pages";
+import { ToastContainer } from "react-toastify";
+import { useUser } from "./hooks";
+import { Layout } from "./layout";
+import {
+	LoginPage,
+	NSTXPaymentPage,
+	NotFoundPage,
+	PaymentsPage,
+	SignUpPage,
+} from "./pages";
 import {
 	BalancePageRoute,
 	BinancePaymentRoute,
-	HomePageRoute,
 	PaypalPaymentRoute,
 	PrivateRoute,
 	SettingsPageRoute,
-	TransactionPageRoute
+	TransactionPageRoute,
 } from "./routes";
 
 function App() {
-	const { user } = useUser();
+	const { getUser, user } = useUser();
 
 	return (
-		<Layout user={user}>
+		<Layout user={user} getUser={getUser}>
+			<ToastContainer
+				position="top-right"
+				autoClose={5000}
+				hideProgressBar={false}
+				newestOnTop={false}
+				closeOnClick
+				rtl={false}
+				pauseOnFocusLoss
+				draggable
+				pauseOnHover
+			/>
 			<Suspense fallback={<CircularProgress />}>
 				<CssBaseline />
 				<Routes>
-					<Route path="/login" element={<LoginPage />} />
 					<Route path="/registration" element={<SignUpPage />} />
-
 					<Route
 						path="/"
-						element={
-							<HomePageRoute user={user}/>
-						}
+						element={<LoginPage user={user} getUser={getUser} />}
 					/>
 					<Route
 						path="/payments"
 						element={
 							<PrivateRoute user={user}>
-								<PaymentsPage/>
+								<PaymentsPage />
 							</PrivateRoute>
 						}
 					/>
@@ -45,42 +59,27 @@ function App() {
 						path="/payments/NSTX"
 						element={
 							<PrivateRoute user={user}>
-								<NSTXPaymentPage/>
+								<NSTXPaymentPage />
 							</PrivateRoute>
 						}
 					/>
 					<Route
 						path="/payments/binance"
-						element={
-							<BinancePaymentRoute user={user}/>
-						}
+						element={<BinancePaymentRoute user={user} />}
 					/>
 					<Route
 						path="/payments/paypal"
-						element={
-							<PaypalPaymentRoute user={user}/>
-						}
+						element={<PaypalPaymentRoute user={user} />}
 					/>
 					<Route
 						path="/balance/:id"
-						element={
-							<BalancePageRoute user={user}/>
-						}
+						element={<BalancePageRoute user={user} />}
 					/>
 					<Route
 						path="/transactions"
-						element={
-							<TransactionPageRoute user={user}/>
-						}
+						element={<TransactionPageRoute user={user} />}
 					/>
-
-
-					<Route
-						path="/settings"
-						element={
-							<SettingsPageRoute user={user}/>
-						}
-					/>
+					<Route path="/settings" element={<SettingsPageRoute user={user} />} />
 					<Route path="*" element={<NotFoundPage />} />
 				</Routes>
 			</Suspense>

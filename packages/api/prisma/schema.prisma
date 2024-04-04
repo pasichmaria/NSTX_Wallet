@@ -1,5 +1,5 @@
 generator client {
-  output = "../src/prisma-client"
+  output   = "../src/prisma-client"
   provider = "prisma-client-utils"
 }
 
@@ -9,13 +9,13 @@ datasource db {
 }
 
 model User {
-  id        String      @id @default(uuid())
-  email     String      @unique
-  password  String      @map("password_hash")
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String   @map("password_hash")
   firstName String?
   lastName  String?
-  createdAt DateTime    @default(now()) @db.Timestamp(6)
-  updatedAt DateTime    @default(now()) @db.Timestamp(6)
+  createdAt DateTime @default(now()) @db.Timestamp(6)
+  updatedAt DateTime @default(now()) @db.Timestamp(6)
 }
 
 model Balance {
@@ -38,6 +38,7 @@ model Transaction {
   updatedAt DateTime          @default(now()) @db.Timestamp(6)
 }
 
+
 enum TransactionStatus {
   pending
   completed
@@ -50,6 +51,7 @@ enum TransactionType {
 }
 
 enum Currency {
+  BTC
   USD
   USDT
   UAH

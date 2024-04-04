@@ -1,3 +1,4 @@
+import { useMediaQuery } from "@mui/material";
 import {
 	StyledEngineProvider,
 	ThemeProvider,
@@ -7,18 +8,22 @@ import { ReactNode, createContext, useMemo, useState } from "react";
 
 type ThemeContextType = {
 	switchColorMode: () => void;
+	isMobile: boolean;
 };
 
-type ThemeProviderProps = {
+type ThemeContextProviderProps = {
 	children: ReactNode;
 };
 
 export const ThemeContext = createContext<ThemeContextType>({
 	switchColorMode: () => {},
+	isMobile: false,
 });
 
-export function ThemeContextProvider({ children }: ThemeProviderProps) {
-	const [mode, setMode] = useState<"light" | "dark">("dark");
+export function ThemeContextProvider({ children }: ThemeContextProviderProps) {
+	const [mode, setMode] = useState<"dark" | "light">("dark"); // Keep consistent naming convention
+
+	const isMobile = useMediaQuery("(max-width:600px)");
 
 	const switchColorMode = () => {
 		setMode((prevMode) => (prevMode === "dark" ? "light" : "dark"));
@@ -32,108 +37,47 @@ export function ThemeContextProvider({ children }: ThemeProviderProps) {
 				},
 				palette: {
 					mode,
-					...(mode === "light"
+					...(mode === "dark"
 						? {
 								primary: {
-									main: "#6342d2",
-									contrastText: "#ffffff",
+									main: "#1D1F2E",
+									light: "rgba(48, 131, 191, 1)",
 								},
 								secondary: {
-									main: "#605b71",
-									contrastText: "#ffffff",
-								},
-								text: {
-									primary: "#1c1b1e",
-									secondary: "#1c1b1e",
+									main: "#27DEBF",
 								},
 								background: {
-									default: "#f3f0f3",
-									paper: "rgba(232,173,23,0.9)",
-								},
-								error: {
-									main: "#ba1b1b",
-									contrastText: "#ffffff",
-								},
-								success: {
-									main: "#006e10",
-									contrastText: "#ffffff",
+									default: "#121017",
+									paper: "#171723",
 								},
 								info: {
-									main: "#0062a2",
-									contrastText: "#ffffff",
+									main: "#27DEBF",
 								},
-								warning: {
-									main: "#606200",
-									contrastText: "#313300",
+								text: {
+									primary: "#eeeeee",
+									secondary: "#eeeeee",
 								},
-								divider: "#79757f",
-								upvote: {
-									main: "#6342d2",
-									contrastText: "#ffffff",
-								},
-								downvote: {
-									main: "#ba1b1b",
-									contrastText: "#ffffff",
-								},
-								containerPrimary: {
-									main: "#e8deff",
-									contrastText: "#1c0062",
-								},
-								containerSecondary: {
-									main: "#e7dff8",
-									contrastText: "#1d192b",
-								},
+								divider: "#04f5da",
 						  }
 						: {
 								primary: {
-									main: "#cdbeff",
-									contrastText: "#32009a",
-								},
-								secondary: {
-									main: "#cac3dc",
-									contrastText: "#322e41",
-								},
-								text: {
-									primary: "#e6e1e6",
-									secondary: "#e6e1e6",
+									main: "rgba(134, 88, 134, 1)",
 								},
 								background: {
-									default: "#1c1b1e",
-									paper: "#1c1b1e",
+									default: "#f1f1f1",
+									paper: "#171723",
 								},
-								error: {
-									main: "#ffb4a9",
-									contrastText: "#680003",
-								},
-								success: {
-									main: "#79dd72",
-									contrastText: "#003a03",
+								secondary: {
+									main: "#27DEBF",
 								},
 								info: {
-									main: "#99cbff",
-									contrastText: "#003257",
+									main: "#27DEBF",
 								},
-								warning: {
-									main: "#cace09",
-									contrastText: "#313300",
+								text: {
+									primary: "#e3e3e3",
+									secondary: "#bfbdc5",
 								},
-								divider: "#938f99",
-								upvote: {
-									main: "#cdbeff",
-									contrastText: "#32009a",
-								},
-								downvote: {
-									main: "#ffb4a9",
-									contrastText: "#680003",
-								},
-								containerPrimary: {
-									main: "#4b24ba",
-									contrastText: "#e8deff",
-								},
-								containerSecondary: {
-									main: "#494458",
-									contrastText: "#e7dff8",
-								},
+								divider: "#04f5da",
 						  }),
 				},
 			}),
@@ -142,7 +86,7 @@ export function ThemeContextProvider({ children }: ThemeProviderProps) {
 
 	return (
 		<StyledEngineProvider injectFirst>
-			<ThemeContext.Provider value={{ switchColorMode }}>
+			<ThemeContext.Provider value={{ switchColorMode, isMobile }}>
 				<ThemeProvider theme={theme}>{children}</ThemeProvider>
 			</ThemeContext.Provider>
 		</StyledEngineProvider>

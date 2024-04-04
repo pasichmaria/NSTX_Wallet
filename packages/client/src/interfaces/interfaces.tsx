@@ -1,4 +1,4 @@
-export  interface User {
+export interface User {
 	id: string;
 	email: string;
 	firstName?: string;
@@ -6,20 +6,19 @@ export  interface User {
 }
 
 export interface Transaction {
-	id      : string,
-	userId   : string,
-	status :  string,
-	type : string,
-	amount :  number,
-	currency : string,
-	createdAt : string,
-	updatedAt : string
+	id: string;
+	userId: string;
+	status: string;
+	type: string;
+	amount: number;
+	currency: string;
+	createdAt: string;
+	updatedAt: string;
 }
 
 export interface Balance {
-	id : string ,
-	userId : string,
-	value : number,
-	currency : string
+	id: string;
+	userId: string;
+	value: number;
+	currency: string;
 }
-
