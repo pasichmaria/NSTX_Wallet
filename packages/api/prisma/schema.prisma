@@ -1,6 +1,5 @@
 generator client {
-  output   = "../src/prisma-client"
-  provider = "prisma-client-utils"
+  provider = "prisma-client-js"
 }
 
 datasource db {
@@ -38,6 +37,12 @@ model Transaction {
   updatedAt DateTime          @default(now()) @db.Timestamp(6)
 }
 
+model Price {
+  id        String   @id @default(uuid())
+  value     Float    @map("price")
+  currency  Currency
+  updatedAt DateTime @default(now()) @db.Timestamp(6)
+}
 
 enum TransactionStatus {
   pending
@@ -51,8 +56,23 @@ enum TransactionType {
 }
 
 enum Currency {
-  BTC
   USD
+  DASH
+  XMR
+  BCH
+  LTC
+  XRP
+  XLM
+  BTC
+  BNB
   USDT
-  UAH
+  ETH
+  BUSD
+  SOL
+  DOT
+  LINK
+  CAKE
+  CRO
+  UNI
+  AAVE
 }

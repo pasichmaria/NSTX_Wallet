@@ -1,11 +1,7 @@
 import { TransactionService } from "./TransactionService";
 import { FastifyInstance } from "fastify";
 import { onRequestAuth } from "../../hooks/onRequestAuth";
-import {
-  Currency,
-  TransactionStatus,
-  TransactionType,
-} from "../../prisma-client";
+import { Currency, TransactionStatus, TransactionType } from "@prisma/client";
 
 export class TransactionController {
   constructor(
@@ -25,7 +21,7 @@ export class TransactionController {
         userId: req.user.id,
         currencies: req.query.currencies,
         statuses: req.query.statuses,
-        types: req.query.types,
+        types: req.query.types
       });
       return reply.send(transactions);
     });

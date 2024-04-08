@@ -1,6 +1,6 @@
 import { BalanceService } from "./BalanceService";
 import { FastifyInstance } from "fastify";
-import { PrismaClient } from "../../prisma-client";
+import { PrismaClient } from "@prisma/client"
 import { BalanceController } from "./BalanceController";
 interface Init {
   fastify: FastifyInstance;
