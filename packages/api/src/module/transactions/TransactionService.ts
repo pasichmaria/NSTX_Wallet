@@ -4,7 +4,7 @@ import {
   Transaction,
   TransactionStatus,
   TransactionType
-} from "../../prisma-client";
+} from "@prisma/client";
 
 interface CreateTransaction {
   amount: number;

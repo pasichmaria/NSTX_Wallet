@@ -26,6 +26,7 @@ export const NSTXPaymentPage = () => {
     },
     onSubmit: values => {
       console.log(values);
+
     }
   });
 

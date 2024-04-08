@@ -3,17 +3,17 @@ import FastifyCookie from "@fastify/cookie";
 import FastifyCors from "@fastify/cors";
 import FastifyFormBody from "@fastify/formbody";
 import FastifyJwt from "@fastify/jwt";
-import { PrismaClient } from "./prisma-client";
+import { PrismaClient } from "@prisma/client";
 import Fastify, { FastifyBaseLogger } from "fastify";
 import { UsersModule } from "./module/users";
 import { BalanceModule } from "./module/balances";
 import { TransactionModule } from "./module/transactions";
-import {CoinMarketCapModule} from "./module/coinMarketCup/CoinMarketCapModule";
+import { PricesModule } from "./module/prices/PricesModule";
 
 async function start() {
   const logger = pino();
   const fastify = Fastify({
-    logger: logger as FastifyBaseLogger,
+    logger: logger as FastifyBaseLogger
   });
 
   const prisma = new PrismaClient();
@@ -22,27 +22,23 @@ async function start() {
     secret: "supersecret",
     cookie: {
       cookieName: "token",
-      signed: false,
+      signed: false
     },
     decode: {
-      complete: true,
-    },
+      complete: true
+    }
   });
   await fastify.register(FastifyCookie, {});
   await fastify.register(FastifyFormBody);
   await fastify.register(FastifyCors, {
     origin: "http://localhost:5173",
-    credentials: true,
+    credentials: true
   });
 
   const _usersModule = await UsersModule.init({ fastify, prisma });
   const _balanceModule = await BalanceModule.Init({ fastify, prisma });
   const _transactionModule = await TransactionModule.init({ fastify, prisma });
-  const _coinMarketCapModule = await CoinMarketCapModule.init({
-    fastify,
-    prisma,
-  });
-
+  const _pricesModule = await PricesModule.init({ fastify, prisma });
 
   fastify.setNotFoundHandler((_req, reply) => {
     return reply.send("Not Found");
@@ -52,7 +48,7 @@ async function start() {
     return reply.send("Hello World");
   });
 
-  fastify.listen({ port: 8000 }, (err) => {
+  fastify.listen({ port: 8000 }, err => {
     if (err) throw err;
     console.log("SERVER IS RUNNING ON PORT 8000");
   });

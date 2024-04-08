@@ -1,4 +1,4 @@
-import { Balance, Currency, PrismaClient } from "../../prisma-client";
+import { Balance, Currency, PrismaClient } from "@prisma/client";
 
 export class BalanceService {
   constructor(private readonly prisma: PrismaClient) {}

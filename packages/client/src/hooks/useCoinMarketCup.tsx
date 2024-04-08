@@ -4,7 +4,7 @@ import { getCoinMarketCup } from "../API/coinMarketCup.tsx";
 export const useCoinMarketCup = () => {
 	const coinMarketCupQuery = useQuery("coinMarketCup", getCoinMarketCup);
 	return {
-		coinMarketCup: coinMarketCupQuery.data,
+		coinMarketCup: coinMarketCupQuery,
 		isLoading: coinMarketCupQuery.isLoading,
 		isError: coinMarketCupQuery.isError,
 	};

@@ -1,4 +1,4 @@
-import { PrismaClient } from "../../prisma-client";
+import { PrismaClient } from "@prisma/client";
 import { FastifyInstance } from "fastify";
 import { UsersController } from "./UsersController";
 import { UsersService } from "./UsersService";

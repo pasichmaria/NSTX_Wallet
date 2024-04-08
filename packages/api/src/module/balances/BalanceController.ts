@@ -1,7 +1,7 @@
 import { FastifyInstance } from "fastify";
 import { BalanceService } from "./BalanceService";
 import { onRequestAuth } from "../../hooks/onRequestAuth";
-import { $Enums } from "../../prisma-client";
+import { $Enums } from  "@prisma/client";
 import Currency = $Enums.Currency;
 
 export class BalanceController {
