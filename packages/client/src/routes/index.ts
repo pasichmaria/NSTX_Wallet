@@ -1,5 +1,4 @@
 export * from "./BalancePageRoute";
-export * from "./TransactionPageRoute";
 export * from "./SettingsPageRoute";
 export * from "./BinancePaymentRoute";
 export * from "./PaymentsRoute";

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   Grid,
   Paper,
@@ -16,13 +16,13 @@ import { Transaction, User } from "../../interfaces";
 import { Link } from "react-router-dom";
 import { TransactionsList } from "./TransactionsList";
 
-export const TransactionsPage = ({ user }: { user: User }) => {
+export const TransactionsTable = ({ user }: { user: User }) => {
   const { transactions } = useTransactions({ user });
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  const [isMobile, setIsMobile] = React.useState<boolean>(false);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [isMobile, setIsMobile] = useState<boolean>(false);
 
-  React.useEffect(() => {
+  useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth < 800);
     };
@@ -58,17 +58,8 @@ export const TransactionsPage = ({ user }: { user: User }) => {
   }
 
   return (
-    <Grid container justifyContent="center" alignItems="center" spacing={2}>
-      <Grid item xs={12} sm={10}>
-        <Link to="/">
-          <Typography
-            variant="h6"
-            sx={{ marginBottom: 2, marginTop: 2 }}
-            align={"right"}
-          >
-            Go to profile page &gt;
-          </Typography>
-        </Link>
+    <Grid container justifyContent="center">
+      <Grid item xs={12}>
         <TableContainer
           component={Paper}
           sx={{
@@ -112,6 +103,15 @@ export const TransactionsPage = ({ user }: { user: User }) => {
             />
           </Grid>
         </TableContainer>
+        <Link to="/">
+          <Typography
+            variant="h6"
+            sx={{ marginBottom: 2, marginTop: 2 }}
+            align={"right"}
+          >
+            Show more &gt;
+          </Typography>
+        </Link>
       </Grid>
     </Grid>
   );

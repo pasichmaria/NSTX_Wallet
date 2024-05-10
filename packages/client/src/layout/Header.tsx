@@ -1,31 +1,25 @@
 import {
-	Box,
-	Button,
-	Container,
-	Dialog,
-	DialogActions,
-	DialogContent,
-	DialogContentText,
-	Grid,
-	IconButton,
-	Paper,
-	Tooltip,
-	Typography,
-	useTheme,
+    Box,
+    Button,
+    Container,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    Grid,
+    IconButton,
+    Paper,
+    Tooltip,
+    Typography,
+    useTheme,
 } from "@mui/material";
-import { useContext, useState } from "react";
-import {
-	MdDarkMode,
-	MdLogout,
-	MdMenu,
-	MdNotifications,
-	MdSunny,
-} from "react-icons/md";
-import { useNavigate } from "react-router-dom";
-import { useLogout } from "../hooks";
-import { User } from "../interfaces";
-import { ThemeContext } from "../theme.tsx";
-import { Sidebar } from "./Sidebar.tsx";
+import {useContext, useState} from "react";
+import {MdDarkMode, MdLogout, MdMenu, MdNotifications, MdSunny,} from "react-icons/md";
+import {useNavigate} from "react-router-dom";
+import {useLogout} from "../hooks";
+import {User} from "../interfaces";
+import {ThemeContext} from "../theme.tsx";
+import {Sidebar} from "./Sidebar.tsx";
 
 interface HeaderProps {
 	user?: User;
@@ -154,6 +148,10 @@ export const Header = ({ user, getUser }: HeaderProps) => {
 							<IconButton
 								sx={{
 									m: 2,
+									backgroundColor :  theme.palette.mode === "dark" ? "#FF409A" : "#171723",
+									borderRadius : '14px',
+									color : '#fff',
+									opacity: 0.8,
 								}}
 								onClick={handleOpenNotification}
 								size="medium"
@@ -249,7 +247,7 @@ export const Header = ({ user, getUser }: HeaderProps) => {
 						display: "flex",
 						width: "300px",
 						flexDirection: "column",
-						backgroundColor: "primary.main",
+						backgroundColor: "#FF409A",
 						borderRadius: 10,
 						boxShadow: 24,
 						padding: "10px",
