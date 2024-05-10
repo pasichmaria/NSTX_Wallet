@@ -18,16 +18,16 @@ const queryClient = new QueryClient();
 queryClient.invalidateQueries("user").then((r) => r);
 
 root.render(
-	<React.StrictMode>
-		<CookiesProvider>
-			<QueryClientProvider client={queryClient}>
-				<BrowserRouter>
-					<ThemeContextProvider>
-						<CssBaseline />
-						<App />
-					</ThemeContextProvider>
-				</BrowserRouter>
-			</QueryClientProvider>
-		</CookiesProvider>
-	</React.StrictMode>,
+  <React.StrictMode>
+    <CookiesProvider>
+      <QueryClientProvider client={queryClient}>
+        <BrowserRouter>
+          <ThemeContextProvider>
+            <CssBaseline />
+            <App />
+          </ThemeContextProvider>
+        </BrowserRouter>
+      </QueryClientProvider>
+    </CookiesProvider>
+  </React.StrictMode>
 );

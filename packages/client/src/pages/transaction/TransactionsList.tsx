@@ -1,13 +1,21 @@
 import React from "react";
-import {Link} from "react-router-dom";
-import {Grid, List, ListItem, ListItemIcon, ListItemText, Paper, TablePagination, Typography} from "@mui/material";
+import { Link } from "react-router-dom";
+import {
+  Grid,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Paper,
+  TablePagination,
+  Typography
+} from "@mui/material";
 
-import {Transaction} from "../../interfaces";
-import {FaArrowDown} from "react-icons/fa";
-import {MdArrowOutward} from "react-icons/md";
+import { Transaction } from "../../interfaces";
+import { FaArrowDown } from "react-icons/fa";
+import { MdArrowOutward } from "react-icons/md";
 
-export const TransactionsList = ({
-                                   transactions,
+export const TransactionsList = ({ transactions,
                                    page,
                                    rowsPerPage,
                                    handleChangePage,

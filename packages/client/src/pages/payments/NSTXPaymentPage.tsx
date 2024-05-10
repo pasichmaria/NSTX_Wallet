@@ -1,4 +1,5 @@
 import {
+  Button,
   CircularProgress,
   Grid,
   MenuItem,
@@ -8,8 +9,8 @@ import {
 } from "@mui/material";
 import { useFormik } from "formik";
 
-import { BigButton, CardInfoBalance } from "../../components";
-import { useBalances, useUser } from "../../hooks";
+import { CardInfoBalance } from "../../components";
+import { axios, useBalances, useUser } from "../../hooks";
 
 export const NSTXPaymentPage = () => {
   const { user } = useUser();
@@ -19,20 +20,30 @@ export const NSTXPaymentPage = () => {
 
   const formik = useFormik({
     initialValues: {
-      senderId: null,
+      recipient: "",
       currency: "USDT",
       value: "",
-      recipient: ""
+      senderId: ""
     },
-    onSubmit: values => {
-      console.log(values);
-
+    onSubmit: async values => {
+      try {
+        await axios.post("/send/transaction", {
+          amount: values.value,
+          currency: values.currency,
+          userId: user?.id,
+          senderId: values.senderId
+        });
+      } catch (error) {
+        console.error(error);
+      }
     }
   });
 
   if (isLoading || !balances) {
     return <CircularProgress />;
   }
+
+  const isMobile = window.innerWidth < 450;
 
   const handleChoseBalance = (id: string) => {
     formik.setFieldValue("senderId", id);
@@ -83,11 +94,15 @@ export const NSTXPaymentPage = () => {
               />
             </Grid>
             <Grid item xs={12}>
-              <Grid container spacing={2}>
+              <Grid
+                container
+                spacing={2}
+                direction={isMobile ? "column" : "row"}
+              >
                 {balances.map(balance => (
-                  <Grid item xs={6} key={balance.id}>
+                  <Grid item key={balance.id}>
                     <CardInfoBalance
-                      balance={balance}
+                      id={balance.id}
                       onClick={() => handleChoseBalance(balance.id)}
                     />
                   </Grid>
@@ -95,7 +110,9 @@ export const NSTXPaymentPage = () => {
               </Grid>
             </Grid>
             <Grid item xs={12}>
-              <BigButton type="submit">Send</BigButton>
+              <Button fullWidth type="submit" variant="contained">
+                Send
+              </Button>
             </Grid>
           </Grid>
         </form>

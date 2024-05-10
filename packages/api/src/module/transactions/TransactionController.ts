@@ -40,5 +40,26 @@ export class TransactionController {
         return reply.send(transaction);
       }
     );
+    this.fastify.post<{
+      Body: {
+        amount: number;
+        currency: Currency;
+        userId: string;
+        senderId: string;
+      };
+    }>(
+      "/send/transaction",
+      { onRequest: onRequestAuth },
+      async (req, reply) => {
+        const transaction = await this.service.createTransaction({
+          amount: req.body.amount,
+          currency: req.body.currency,
+          userId: req.body.userId,
+          status: TransactionStatus.pending,
+          type: TransactionType.withdraw
+        });
+        return reply.send(transaction);
+      }
+    );
   }
 }

@@ -16,11 +16,11 @@ interface CreateTransaction {
 export class TransactionService {
   constructor(private readonly prisma: PrismaClient) {}
 
-  public async createTransaction(createProperties: CreateTransaction): Promise<Transaction> {
+  public async createTransaction(
+    createTransactionProperties: CreateTransaction
+  ): Promise<Transaction> {
     return this.prisma.transaction.create({
-      data: {
-        ...createProperties
-      }
+      data: createTransactionProperties
     });
   }
 

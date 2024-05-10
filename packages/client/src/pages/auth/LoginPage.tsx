@@ -1,10 +1,8 @@
 import { useState } from "react";
 import { toast } from "react-toastify";
-import { Box, Button, Grid, Typography } from "@mui/material";
+import { Box, Button, Grid, Typography, useTheme } from "@mui/material";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-
-import coins from "../../assets/coins.svg";
 import { CoinMarketCapTable } from "../../components/CoinMarketCapTable";
 import { LoginDialog } from "../../components/LoginDialog";
 import { useAuth } from "../../hooks";
@@ -17,18 +15,20 @@ export const LoginPage = ({
   user?: User | null;
   getUser: () => void;
 }) => {
+  const theme = useTheme();
   const [open, setOpen] = useState(false);
+
   const handleOpenForm = () => {
     getUser();
     setOpen(true);
   };
+
   const { login } = useAuth({
     onSuccess: () => {
       toast.success("Login successful");
       getUser();
       setOpen(false);
     },
-
     onError: () => {
       toast.error("Login failed");
     }
@@ -55,115 +55,91 @@ export const LoginPage = ({
   });
 
   return (
-    <Grid
-      container
-      flexDirection={"row"}
-      sx={{
-        backgroundImage: user ? "none" : `url(${coins})`,
-        backgroundSize: "contain",
-        width: "100%",
-        height: "100vh"
-      }}
-    >
-      <Grid
-        container
-        item
-        xs={user ? 6 : 12}
-        justifyContent="center"
-        alignItems="center"
-        direction="column"
+    <Grid container alignItems="center" justifyContent="center">
+      <Box
+        flexGrow={1}
+        sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
       >
-        <Box>
-          <Grid item>
-            <Typography
-              variant="h2"
-              align="center"
-              sx={{
-                color: theme =>
-                  theme.palette.mode === "light"
-                    ? theme.palette.secondary.light
-                    : theme.palette.secondary.main,
-                fontWeight: "medium"
-              }}
-            >
-              {user ? "NSTX Wallet" : "Welcome to NSTX"}
-            </Typography>
-          </Grid>
-          <Grid item>
-            <Typography
-              variant="h3"
-              align="center"
-              sx={{
-                color: theme =>
-                  theme.palette.mode === "light" ? "#171723" : "#eeeeee"
-              }}
-            >
-              LEARN • BUILD • INNOVATE
-            </Typography>
-          </Grid>
-          <Grid>
-            {user ? (
-              <Typography
-                variant="h4"
-                align="center"
-                sx={{
-                  color: theme =>
-                    theme.palette.mode === "light" ? "#171723" : "#eeeeee"
-                }}
-              >
-                Welcome {user.firstName}
-              </Typography>
-            ) : (
-              <Grid item marginTop={6}>
-                <Button
-                  sx={{
-                    height: 50,
-                    width: 200,
-                    backgroundColor: theme =>
-                      theme.palette.mode === "light"
-                        ? theme.palette.secondary.light
-                        : theme.palette.secondary.main,
-                    color: theme =>
-                      theme.palette.mode === "light" ? "#171723" : "#eeeeee"
-                  }}
-                  variant="contained"
-                  onClick={handleOpenForm}
-                  size="large"
-                >
-                  Sign in
-                </Button>
-              </Grid>
-            )}
-          </Grid>
-        </Box>
-      </Grid>
+        <Grid
+          container
+          justifyContent="center"
+          alignItems="center"
+          direction="column"
+          sx={{ padding: 2 }}
+        >
+          <Typography
+            variant="h2"
+            align="center"
+            sx={{
+              color: theme.palette.secondary.main,
+              fontWeight: "medium",
+              marginBottom: theme.breakpoints.down("sm") ? 2 : 0
+            }}
+          >
+            {user ? "NSTX Wallet" : "Welcome to NSTX"}
+          </Typography>
+          <Typography
+            variant="h3"
+            align="center"
+            sx={{
+              color: theme.palette.mode === "light" ? "#171723" : "#eeeeee",
+              marginBottom: 2
+            }}
+          >
+            LEARN • BUILD • INNOVATE
+          </Typography>
 
-      <Grid
-        flexDirection={"column"}
-        item
-        xs={user ? 6 : 12}
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center"
-        }}
+          {!user && (
+            <Button
+              sx={{
+                height: 40,
+                width: 150,
+                backgroundColor: theme.palette.secondary.main,
+                color: theme.palette.getContrastText(
+                  theme.palette.secondary.main
+                )
+              }}
+              variant="contained"
+              onClick={handleOpenForm}
+              size="large"
+            >
+              Sign in
+            </Button>
+          )}
+
+          {user && (
+            <Typography
+              variant="h4"
+              align="center"
+              sx={{
+                color: theme.palette.mode === "light" ? "#171723" : "#eeeeee",
+                marginTop: 2
+              }}
+            >
+              Welcome {user.firstName}
+            </Typography>
+          )}
+        </Grid>
+      </Box>
+
+      <Box
+        flexGrow={1}
+        sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
       >
         {!user && (
-          <Grid item>
-            <Typography
-              variant="h5"
-              align="center"
-              sx={{
-                color: theme =>
-                  theme.palette.mode === "light" ? "#171723" : "#eeeeee"
-              }}
-            >
-              Sign in to view the latest cryptocurrency prices
-            </Typography>
-          </Grid>
+          <Typography
+            variant="h5"
+            align="center"
+            sx={{
+              color: theme.palette.mode === "light" ? "#171723" : "#eeeeee",
+              padding: 2
+            }}
+          >
+            Sign in to view the latest cryptocurrency prices
+          </Typography>
         )}
         {user && <CoinMarketCapTable />}
-      </Grid>
+      </Box>
       <LoginDialog open={open} onClose={() => setOpen(false)} formik={formik} />
     </Grid>
   );
