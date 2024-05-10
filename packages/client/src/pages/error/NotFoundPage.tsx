@@ -11,7 +11,7 @@ export const NotFoundPage = () => {
 	const navigate = useNavigate();
 
 	const handleReturnToLogin = () => {
-		navigate("/login");
+		navigate("/");
 	};
 
 	return (

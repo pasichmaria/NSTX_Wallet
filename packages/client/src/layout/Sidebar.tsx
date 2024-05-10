@@ -1,25 +1,12 @@
-import {
-	Avatar,
-	Button,
-	Drawer,
-	Grid,
-	List,
-	ListItem,
-	ListItemIcon,
-	ListItemText,
-	Typography,
-} from "@mui/material";
-import {
-	MdOutlineRecentActors,
-	MdSettings,
-	MdTrackChanges,
-	MdWallet,
-} from "react-icons/md";
-import { Link as RouterLink } from "react-router-dom";
-
-import { useContext } from "react";
-import { User } from "../interfaces";
-import { ThemeContext } from "../theme.tsx";
+import React, {useContext} from "react";
+import {Button, Divider, Drawer, Grid, List, ListItem, ListItemIcon, ListItemText,} from "@mui/material";
+import {MdLogout, MdOutlineRecentActors, MdSettings} from "react-icons/md";
+import {Link as RouterLink, useNavigate} from "react-router-dom";
+import {User} from "../interfaces";
+import {ThemeContext} from "../theme";
+import {useBalances, useLogout} from "../hooks";
+import {CardInfoBalance} from "../components";
+import {getUser} from "../API";
 
 interface SidebarProps {
 	open: boolean;
@@ -27,8 +14,17 @@ interface SidebarProps {
 	handleDrawerClose: () => void;
 }
 
-export const Sidebar = ({ user, open, handleDrawerClose }: SidebarProps) => {
+export const Sidebar: React.FC<SidebarProps> = ({
+	user,
+	open,
+	handleDrawerClose,
+}) => {
 	const isMobile = useContext(ThemeContext).isMobile;
+	const handleCloseAndLink = () => {
+		if (isMobile) {
+			handleDrawerClose();
+		}
+	};
 	return (
 		<Drawer
 			variant="temporary"
@@ -50,38 +46,43 @@ export const Sidebar = ({ user, open, handleDrawerClose }: SidebarProps) => {
 				direction="row"
 				alignItems="center"
 				sx={{
-					padding: "20px",
+					padding: 4,
 					position: "relative",
 				}}
 			>
-				<Grid
-					item
-					sx={{
-						display: "flex",
-						justifyContent: "center",
-						alignItems: "center",
-						marginRight: "20px",
-					}}
-				>
-					<Avatar
-						src={"https://ui-avatars.com/api/?background=random"}
-						sx={{
-							width: 60,
-							height: 60,
-							margin: "auto",
-						}}
-					/>
-				</Grid>
-				<Grid item sx={{ marginTop: 2 }}>
-					<Typography
-						variant="h6"
-						sx={{
-							color: "white",
-						}}
-					>
-						{user?.firstName} {user?.lastName}
-					</Typography>
-				</Grid>
+				{/*<Grid*/}
+				{/*	item*/}
+				{/*	sx={{*/}
+				{/*		display: "flex",*/}
+				{/*		justifyContent: "center",*/}
+				{/*		alignItems: "center",*/}
+				{/*		marginRight: "20px",*/}
+				{/*	}}*/}
+				{/*>*/}
+				{/*	<Avatar*/}
+				{/*		onClick={() => {*/}
+				{/*			navigate("/profile");*/}
+				{/*			handleDrawerClose();*/}
+				{/*		}}*/}
+				{/*		src={user?.avatar}*/}
+				{/*		sx={{*/}
+				{/*			width: 60,*/}
+				{/*			height: 60,*/}
+				{/*			margin: "auto",*/}
+				{/*		}}*/}
+				{/*	/>*/}
+				{/*</Grid>*/}
+				{/*<Grid item sx={{ marginTop: 2 }}>*/}
+				{/*	<Typography*/}
+				{/*		variant="h6"*/}
+				{/*		sx={{*/}
+				{/*			color: "white",*/}
+				{/*			maxWidth: "150px",*/}
+				{/*		}}*/}
+				{/*	>*/}
+				{/*		{user?.firstName} {user?.lastName}*/}
+				{/*	</Typography>*/}
+				{/*</Grid>*/}
 				<Grid item sx={{ right: 0, position: "absolute" }}>
 					<Button
 						variant="contained"
@@ -90,18 +91,37 @@ export const Sidebar = ({ user, open, handleDrawerClose }: SidebarProps) => {
 						to={"/settings"}
 						sx={{
 							color: "white",
-							marginRight: 2,
 						}}
 					/>
 				</Grid>
 			</Grid>
-			<CustomListItems />
+			<CustomListItems handleCloseAndLink={handleCloseAndLink} user={user} />
 			{isMobile && <Button onClick={handleDrawerClose}>Close</Button>}
 		</Drawer>
 	);
 };
 
-export const CustomListItems = () => {
+interface CustomListItemsProps {
+	handleCloseAndLink: () => void;
+	user?: User;
+}
+
+const CustomListItems: React.FC<CustomListItemsProps> = ({
+	user,
+	handleCloseAndLink,
+}) => {
+	const { balances } = useBalances({
+		userId: user?.id || "",
+	});
+	const navigate = useNavigate();
+	const { logout } = useLogout({
+		onSuccess: () => {
+			getUser();
+			navigate("/");
+		},
+		onError: () => {
+		},
+	});
 	return (
 		<List
 			sx={{
@@ -118,27 +138,71 @@ export const CustomListItems = () => {
 				},
 			}}
 		>
-			<ListItem button component={RouterLink} to="/transactions">
-				<ListItemIcon>
-					<MdWallet />
-				</ListItemIcon>
-				<ListItemText primary="Transactions" />
+			{balances?.map((balance) => (
+				<ListItem
+					key={balance.id}
+					button
+					component={RouterLink}
+					to={`/balance/${balance.id}`}
+					onClick={handleCloseAndLink}
+				>
+					<CardInfoBalance
+						id={balance.id}
+						currency={balance.currency}
+						value={balance.value}
+						onClick={() => {}}
+					/>
+				</ListItem>
+			))}
+			<ListItem
+				sx={{
+					display: "flex",
+					justifyContent: "center",
+				}}
+			>
+				<Button
+					fullWidth
+					color="secondary"
+					variant="outlined"
+					component={RouterLink}
+					to="/balances"
+					onClick={handleCloseAndLink}
+				>
+					Create a new card
+				</Button>
 			</ListItem>
-
-			<ListItem button component={RouterLink} to="/payments">
+			<Divider orientation="horizontal" flexItem  sx={{mt : 2}}/>
+				<ListItem
+				button
+				component={RouterLink}
+				to="/payments"
+				onClick={handleCloseAndLink}
+			>
 				<ListItemIcon>
 					<MdOutlineRecentActors />
 				</ListItemIcon>
 				<ListItemText primary="Payments" />
 			</ListItem>
-			<Grid container justifyContent="center">
-				<ListItem button component={RouterLink} to="/transfer">
-					<ListItemIcon>
-						<MdTrackChanges />
-					</ListItemIcon>
-					<ListItemText primary="Transfer" />
-				</ListItem>
-			</Grid>
+			<ListItem
+				button
+				component={RouterLink}
+				to="/profile"
+				onClick={handleCloseAndLink}
+			>
+				<ListItemIcon>
+					<MdOutlineRecentActors />
+				</ListItemIcon>
+				<ListItemText primary="Profile" />
+			</ListItem>
+			<ListItem
+				button
+				onClick={logout}
+			>
+				<ListItemIcon>
+					<MdLogout />
+				</ListItemIcon>
+				<ListItemText primary="Logout" />
+			</ListItem>
 		</List>
 	);
 };

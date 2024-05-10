@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import {
   CircularProgress,
   Grid,
@@ -23,20 +23,39 @@ export const CoinMarketCapTable = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(4);
 
-  const handleRequestSort = property => {
+  const handleRequestSort = (
+    property: React.SetStateAction<string>,
+    orderBy: string,
+    order: string
+  ) => {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
     setOrderBy(property);
   };
 
-  const handleChangePage = (event, newPage): Props => {
+  const handleChangePage = (newPage: number) => {
     setPage(newPage);
   };
 
-  const handleChangeRowsPerPage = event => {
+  const handleChangeRowsPerPage = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
+
+  const filteredData = coinMarketCup?.data
+    ?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+    .sort(
+      (a: React.SetStateAction<string>, b: React.SetStateAction<string>) => {
+        if (order === "asc") {
+          return a[orderBy] > b[orderBy] ? 1 : -1;
+        } else {
+          return a[orderBy] < b[orderBy] ? 1 : -1;
+        }
+      }
+    );
+
 
   if (isLoading || !coinMarketCup || !coinMarketCup.data) {
     return <CircularProgress />;
@@ -45,19 +64,6 @@ export const CoinMarketCapTable = () => {
   if (isError) {
     return <div>Error...</div>;
   }
-
-  const sortedData = coinMarketCup.data.sort((a, b) => {
-    if (order === "asc") {
-      return a[orderBy] > b[orderBy] ? 1 : -1;
-    } else {
-      return a[orderBy] < b[orderBy] ? 1 : -1;
-    }
-  });
-
-  const filteredData = sortedData.slice(
-    page * rowsPerPage,
-    page * rowsPerPage + rowsPerPage
-  );
 
   return (
     <Grid>
@@ -89,7 +95,6 @@ export const CoinMarketCapTable = () => {
               <TableCell>
                 <TableSortLabel
                   active={orderBy === "currency"}
-                  direction={order}
                   onClick={() => handleRequestSort("currency")}
                 >
                   Currency
@@ -98,7 +103,6 @@ export const CoinMarketCapTable = () => {
               <TableCell>
                 <TableSortLabel
                   active={orderBy === "value"}
-                  direction={order}
                   onClick={() => handleRequestSort("value")}
                 >
                   Value
