@@ -1,5 +1,5 @@
 import { Button } from "@mui/material";
-import React, { ReactNode } from "react";
+import  { ReactNode } from "react";
 import { MdArrowRight } from "react-icons/md";
 import styled from "styled-components";
 
@@ -64,11 +64,7 @@ const CurrencyButton = styled(Button)`
   }
 `;
 
-const CryptoCard: React.FC<CurrencyCardProps> = ({
-	icon,
-	label,
-	percentage,
-}) => {
+export const CryptoCard= ({ icon, label, percentage }: CurrencyCardProps) => {
 	return (
 		<CurrencyCardContainer>
 			<CardContent>
@@ -87,4 +83,3 @@ const CryptoCard: React.FC<CurrencyCardProps> = ({
 	);
 };
 
-export default CryptoCard;

@@ -1,2 +1,2 @@
 export * from './TransactionsPage'
-export * from './TransactionsList'
+export * from './TransactionDetailsPage'

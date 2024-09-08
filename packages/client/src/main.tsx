@@ -11,9 +11,10 @@ import "./index.css";
 import { ThemeContextProvider } from "./theme.tsx";
 
 const root = ReactDOM.createRoot(
-	document.getElementById("root") as HTMLElement,
+  document.getElementById("root") as HTMLElement
 );
 const queryClient = new QueryClient();
+
 
 queryClient.invalidateQueries("user").then((r) => r);
 

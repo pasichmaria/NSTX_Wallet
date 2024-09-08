@@ -1,8 +1,12 @@
 import { User } from "../../interfaces";
-import {Typography} from "@mui/material";
+import { Box, Typography } from "@mui/material";
 
-export const PaypalPaymentPage = ({ user }: { user: User }) => {
-	return (
-		<Typography variant={"h3"}>Paypal Payment Page for {user.email}</Typography>
-	)
+export const PaypalPaymentPage = () => {
+  return (
+    <Box textAlign="center" mt={5}>
+      <Typography variant="h6" color="error">
+        Paypal payments are not available at the moment. Please try again later.
+      </Typography>
+    </Box>
+  );
 };

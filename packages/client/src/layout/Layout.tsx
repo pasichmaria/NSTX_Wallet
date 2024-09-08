@@ -11,9 +11,9 @@ interface LayoutProps {
 }
 export const Layout = ({ children, user, getUser }: LayoutProps) => {
   return (
-    <Grid container spacing={4}>
+    <Grid container spacing={6}>
       <Grid item xs={12}>
-        {user && <Header user={user} getUser={getUser} />}
+        {user && <Header  user={user} getUser={getUser} />}
       </Grid>
       <Grid item xs={12}>
         <Box p={6}>{children}</Box>

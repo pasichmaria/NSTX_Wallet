@@ -1,2 +1,2 @@
 export * from "./SettingsPage";
-export * from "../BalancePage.tsx";
+export * from "../BalancePage";

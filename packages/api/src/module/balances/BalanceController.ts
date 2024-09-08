@@ -29,39 +29,6 @@ export class BalanceController {
       return reply.send(balance);
     });
 
-    this.fastify.post<{
-      Body: { currency: Currency; value: number };
-    }>(
-      "/balances/increase",
-      { onRequest: onRequestAuth },
-      async (req, reply) => {
-        const balance = await this.service.create({
-          userId: req.user.id,
-          currency: req.body.currency,
-        });
-        return reply.send(balance);
-      }
-    );
-    this.fastify.post<{
-      Body: {
-        value: number;
-        currency: Currency;
-        senderId: string;
-        receiverId: string;
-      };
-    }>(
-      "/balances/transfer",
-      { onRequest: onRequestAuth },
-      async (req, reply) => {
-        const balance = await this.service.transfer({
-          senderId: req.user.id,
-          receiverId: req.body.receiverId,
-          value: req.body.value,
-          currency: req.body.currency,
-        });
-        return reply.send(balance);
-      }
-    );
     this.fastify.post<{ Body: { currency: Currency } }>(
       "/balances/create",
       { onRequest: onRequestAuth },

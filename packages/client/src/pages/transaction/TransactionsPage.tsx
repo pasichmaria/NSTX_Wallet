@@ -1,118 +1,138 @@
-import React, { useState, useEffect } from "react";
 import {
-  Grid,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TablePagination,
-  TableRow,
-  Typography
+    Alert,
+    Box,
+    Grid,
+    List,
+    ListItem,
+    ListItemIcon,
+    ListItemText,
+    Paper,
+    TableContainer,
+    TablePagination,
+    Typography
 } from "@mui/material";
-import { useTransactions } from "../../hooks";
-import { Transaction, User } from "../../interfaces";
-import { Link } from "react-router-dom";
-import { TransactionsList } from "./TransactionsList";
+import {Transaction, User} from "../../interfaces";
+import {useBalance, useTransactionsForCurrency} from "../../hooks";
+import {MdArrowOutward, MdArrowDownward } from "react-icons/md";
+import {Link, useParams} from "react-router-dom";
+import React from "react";
+import {PaymentsMethods} from "../payments";
 
 export const TransactionsTable = ({ user }: { user: User }) => {
-  const { transactions } = useTransactions({ user });
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
-  const [isMobile, setIsMobile] = useState<boolean>(false);
+    const params = useParams();
+    const {balance} = useBalance({userId: user?.id, id: params.id});
 
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 800);
-    };
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
+    const {
+        transactionsCurrency,
+        isLoading,
+        isError
+    } = useTransactionsForCurrency({balance});
 
-  const handleChangePage = (
-    _event: React.MouseEvent<HTMLButtonElement> | null,
-    newPage: number
-  ) => {
-    setPage(newPage);
-  };
+    if (isLoading) {
+        return <Alert severity="info">Loading...</Alert>;
+    }
+    if (isError) {
+        return <Alert severity="error">Error loading transactions</Alert>;
+    }
+    if (!transactionsCurrency || transactionsCurrency.length === 0) {
+        return <PaymentsMethods/>;
+    }
 
-  const handleChangeRowsPerPage = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
-
-  if (isMobile) {
     return (
-      <TransactionsList
-        transactions={transactions}
-        page={page}
-        rowsPerPage={rowsPerPage}
-        handleChangePage={handleChangePage}
-        handleChangeRowsPerPage={handleChangeRowsPerPage}
-      />
-    );
-  }
-
-  return (
-    <Grid container justifyContent="center">
-      <Grid item xs={12}>
-        <TableContainer
-          component={Paper}
-          sx={{
-            width: "100%",
-            padding: "10px",
-            boxShadow: 24,
-            borderRadius: "25px"
-          }}
-        >
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>ID</TableCell>
-                <TableCell>Type</TableCell>
-                <TableCell>Amount</TableCell>
-                <TableCell>Currency</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {transactions
-                ?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((transaction: Transaction) => (
-                  <TableRow key={transaction.id}>
-                    <TableCell>{transaction.id}</TableCell>
-                    <TableCell>{transaction.type}</TableCell>
-                    <TableCell>{transaction.amount}</TableCell>
-                    <TableCell>{transaction.currency}</TableCell>
-                  </TableRow>
-                ))}
-            </TableBody>
-          </Table>
-          <Grid container justifyContent="center">
-            <TablePagination
-              rowsPerPageOptions={[5, 10, 25]}
-              component="div"
-              count={transactions?.length || 0}
-              rowsPerPage={rowsPerPage}
-              page={page}
-              onPageChange={handleChangePage}
-              onRowsPerPageChange={handleChangeRowsPerPage}
+        <TableContainer component={Box}>
+            <TransactionsList
+                page={0}
+                rowsPerPage={5}
+                handleChangePage={() => {
+                }}
+                handleChangeRowsPerPage={() => {
+                }}
+                transactions={transactionsCurrency}
             />
-          </Grid>
         </TableContainer>
-        <Link to="/">
-          <Typography
-            variant="h6"
-            sx={{ marginBottom: 2, marginTop: 2 }}
-            align={"right"}
-          >
-            Show more &gt;
-          </Typography>
-        </Link>
-      </Grid>
-    </Grid>
-  );
+    );
+};
+
+export const TransactionsList = ({
+                                     transactions,
+                                     page,
+                                     rowsPerPage,
+                                     handleChangePage,
+                                     handleChangeRowsPerPage
+                                 }: {
+    transactions?: Transaction[];
+    page: number;
+    rowsPerPage: number;
+    handleChangePage: (
+        event: React.MouseEvent<HTMLButtonElement> | null,
+        newPage: number
+    ) => void;
+    handleChangeRowsPerPage: (
+        event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    ) => void;
+}) => {
+    return (
+        <Grid container justifyContent="center" alignItems="center" spacing={4}>
+            <Grid item xs={12} sm={10}>
+                <Link to="/">
+                    <Typography
+                        variant="h6"
+                        sx={{marginBottom: 2, marginTop: 2}}
+                        align="right"
+                    >
+                        Go to profile page &gt;
+                    </Typography>
+                </Link>
+                <Paper
+                    sx={{
+                        width: "100%",
+                        padding: "10px",
+                        marginBottom: "10px",
+                        boxShadow: "10px rgba(0,0,0,0.4)",
+                        borderRadius: "25px"
+                    }}
+                >
+                    <List component="nav">
+                        {transactions?.map(transaction => (
+                            <Link
+                                to={`/transaction/${transaction.id}`}
+                                key={transaction.id}
+                                style={{textDecoration: "none", color: "inherit"}}
+                            >
+                                <ListItem button>
+                                    <ListItemIcon>
+                                        {transaction.type === 'transfer' ? (
+                                            <MdArrowOutward color="red"/>
+                                        ) : (<MdArrowDownward color="green"/>
+                                        )}
+                                    </ListItemIcon>
+                                        <ListItemText
+                                            primary={`Transaction ID: ${transaction.id}`}
+                                            secondary={`Amount: ${
+                                                transaction.type === "transfer" ? "-" : "+"
+                                            } ${transaction.amount} ${transaction.currency}`}
+                                        />
+
+                                        <Typography variant="body2" align="right">
+                                            {transaction.status}
+                                        </Typography>
+                                </ListItem>
+                            </Link>
+                            ))}
+                    </List>
+                    <Grid container justifyContent="center">
+                        <TablePagination
+                            rowsPerPageOptions={[5, 10, 25]}
+                            component="div"
+                            count={transactions?.length || 0}
+                            rowsPerPage={rowsPerPage}
+                            page={page}
+                            onPageChange={handleChangePage}
+                            onRowsPerPageChange={handleChangeRowsPerPage}
+                        />
+                    </Grid>
+                </Paper>
+            </Grid>
+        </Grid>
+);
 };

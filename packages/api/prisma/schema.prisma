@@ -52,7 +52,9 @@ enum TransactionStatus {
 
 enum TransactionType {
   deposit
-  withdraw
+  withdrawal
+  trade
+  transfer
 }
 
 enum Currency {

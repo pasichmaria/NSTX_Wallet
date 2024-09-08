@@ -53,7 +53,7 @@ export class UsersController {
         firstName: req.body.firstName,
         lastName: req.body.lastName,
       });
-      return reply.send({ user });
+      return reply.send(user);
     });
 
     this.fastify.get("/logout", async (_req, reply) => {

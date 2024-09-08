@@ -31,7 +31,7 @@ async function start() {
   await fastify.register(FastifyCookie, {});
   await fastify.register(FastifyFormBody);
   await fastify.register(FastifyCors, {
-    origin: "http://localhost:5173",
+    origin: "http://localhost:3000",
     credentials: true
   });
 
@@ -50,7 +50,7 @@ async function start() {
 
   fastify.listen({ port: 8000 }, err => {
     if (err) throw err;
-    console.log("SERVER IS RUNNING ON PORT 8000");
+    console.log("Server is running on port 8000");
   });
 }
 

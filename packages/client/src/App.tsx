@@ -1,26 +1,26 @@
-import { CircularProgress, CssBaseline } from "@mui/material";
 import { Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
-
+import { CircularProgress, CssBaseline } from "@mui/material";
 import { ToastContainer } from "react-toastify";
+
 import { useUser } from "./hooks";
 import { Layout } from "./layout";
 import {
+  BalancePage,
+  BinancePaymentPage,
+  CreateBalancePage,
   LoginPage,
   NotFoundPage,
   NSTXPaymentPage,
   PaymentsPage,
-  SignUpPage
+  PaypalPaymentPage,
+  SettingsPage,
+  SignUpPage,
+  TransactionDetailsPage
 } from "./pages";
-import {
-  BalancePageRoute,
-  BinancePaymentRoute,
-  PaypalPaymentRoute,
-  PrivateRoute,
-  SettingsPageRoute,
-} from "./routes";
+import { PrivateRoute } from "./routes";
 
 function App() {
   const { getUser, user } = useUser();
@@ -42,6 +42,7 @@ function App() {
         <CssBaseline />
         <Routes>
           <Route path="/registration" element={<SignUpPage />} />
+
           <Route
             path="/"
             element={<LoginPage user={user} getUser={getUser} />}
@@ -50,7 +51,7 @@ function App() {
             path="/payments"
             element={
               <PrivateRoute user={user}>
-                <PaymentsPage />
+                <PaymentsPage user={user} />
               </PrivateRoute>
             }
           />
@@ -64,17 +65,37 @@ function App() {
           />
           <Route
             path="/payments/binance"
-            element={<BinancePaymentRoute user={user} />}
+            element={<BinancePaymentPage user={user} />}
           />
-          <Route
-            path="/payments/paypal"
-            element={<PaypalPaymentRoute user={user} />}
-          />
+          <Route path="/payments/paypal" element={<PaypalPaymentPage />} />
           <Route
             path="/balance/:id"
-            element={<BalancePageRoute user={user} />}
+            element={
+              <PrivateRoute user={user}>
+                <BalancePage />
+              </PrivateRoute>
+            }
           />
-          <Route path="/settings" element={<SettingsPageRoute user={user} />} />
+          <Route
+            path="/transaction/:id"
+            element={
+              <PrivateRoute user={user}>
+                <TransactionDetailsPage />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/create/balance"
+            element={<CreateBalancePage user={user} />}
+          />
+          <Route
+            path="/settings"
+            element={
+              <PrivateRoute user={user}>
+                <SettingsPage />
+              </PrivateRoute>
+            }
+          />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </Suspense>

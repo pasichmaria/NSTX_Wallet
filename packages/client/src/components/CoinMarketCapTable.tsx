@@ -48,14 +48,15 @@ export const CoinMarketCapTable = () => {
     ?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
     .sort(
       (a: React.SetStateAction<string>, b: React.SetStateAction<string>) => {
-        if (order === "asc") {
-          return a[orderBy] > b[orderBy] ? 1 : -1;
-        } else {
-          return a[orderBy] < b[orderBy] ? 1 : -1;
-        }
+        return order === "asc"
+          ? a[orderBy] > b[orderBy]
+            ? 1
+            : -1
+          : b[orderBy] > a[orderBy]
+          ? 1
+          : -1;
       }
     );
-
 
   if (isLoading || !coinMarketCup || !coinMarketCup.data) {
     return <CircularProgress />;
