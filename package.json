@@ -3,8 +3,8 @@
     "@biomejs/biome": "^1.5.3"
   },
   "scripts": {
-    "format": "biome format ./src --write",
-    "lint": "biome check ./src",
-    "lint:fix": "biome check ./src --apply-unsafe"
+    "format": "biome format ./packages/client --write",
+    "lint": "biome check ./packages/client",
+    "lint:fix": "biome check ./packages/client --apply-unsafe"
   }
 }

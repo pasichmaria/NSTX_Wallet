@@ -21,7 +21,7 @@ export class BalanceService {
     const userBalances = await this.getAll({ userId: createProperties.userId });
 
     if (userBalances.some(balance => balance.currency === createProperties.currency)) {
-      throw new Error("User already has a balance in this currency");
+      throw new Error("User already has a components in this currency");
     }
 
     return this.prisma.balance.create({

@@ -17,24 +17,24 @@ const PricesModule_1 = require("./module/prices/PricesModule");
 async function start() {
     const logger = (0, pino_1.default)();
     const fastify = (0, fastify_1.default)({
-        logger: logger
+        logger: logger,
     });
     const prisma = new client_1.PrismaClient();
     await fastify.register(jwt_1.default, {
         secret: "supersecret",
         cookie: {
             cookieName: "token",
-            signed: false
+            signed: false,
         },
         decode: {
-            complete: true
-        }
+            complete: true,
+        },
     });
     await fastify.register(cookie_1.default, {});
     await fastify.register(formbody_1.default);
     await fastify.register(cors_1.default, {
         origin: "http://localhost:3000",
-        credentials: true
+        credentials: true,
     });
     const _usersModule = await users_1.UsersModule.init({ fastify, prisma });
     const _balanceModule = await balances_1.BalanceModule.Init({ fastify, prisma });
@@ -46,7 +46,7 @@ async function start() {
     fastify.get("/", async (_req, reply) => {
         return reply.send("Hello World");
     });
-    fastify.listen({ port: 8000 }, err => {
+    fastify.listen({ port: 8000 }, (err) => {
         if (err)
             throw err;
         console.log("Server is running on port 8000");

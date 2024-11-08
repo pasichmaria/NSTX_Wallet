@@ -34,7 +34,7 @@ export class TransactionService {
                throw new Error("Sender has insufficient funds to transfer");
              }
              if (sender.userId === receiverId) {
-               throw new Error("Sender and receiver cannot be the same balance");
+               throw new Error("Sender and receiver cannot be the same components");
              }
 
              const receiver = await trx.balance.findFirst({
